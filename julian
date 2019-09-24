@@ -1,0 +1,854 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------
+#
+#    Copyright (C) 2016  Ev. Drikos (drikosev@gmail.com)
+#
+#    The script julian is free software: you can redistribute it and/or 
+#    modifyit under the terms of the GNU General Public License as published
+#    by the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    The script julian is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+#-----------------------------------------------------------------------------
+
+
+verbose=0;
+
+# two "abstract" counters facilitate conversion between calendars.
+dayspassedold=0
+dayspassednew=0
+
+lc_date_time=$(date +"%Y-%m-%d,%H:%M,%j");
+today=${lc_date_time:0:10};
+dayofyear=${lc_date_time:17:3};
+
+
+program=$(basename $0)
+
+version="0.97";
+
+show_version() {
+     echo "$version";
+}
+
+does_echo_needs_e() {
+
+E=$( echo -e );
+if [ "$E" = "" ] ; then
+  E="-e" ;
+#  echo "accepts e" ;
+else
+  E="" ;
+#  echo "doesn't accept e" ;
+fi
+
+}
+usage(){
+
+ echo "" ;
+
+ echo "Program: $program ($version)" ;
+
+ does_echo_needs_e ;
+ echo $E ""  ;
+ echo $E "This script can run in one of the following two modes:"   ;
+ echo $E ""  ;
+
+ echo $E "(1) $program [  --debug[={0|1|2|3}] ] [ --use <date-time> ]"   ;
+ echo $E "(2) $program { --help | --version } "   ;
+
+ echo $E ""  ; 
+ echo $E "  --use"       '\x09' "<date-time>"
+ echo $E ""        '\x09''\x09' 'formatted as `date +"%Y-%m-%d,%H:%M,%j"`' ; 
+ echo $E ""  ;
+ echo $E "  --debug"     '\x09' "Run in verbose mode, levels are 0 (default), 1, 2, or 3." 
+ echo $E ""        '\x09''\x09' "In each level ${program} displays messages as explained below:."
+ echo $E ""        '\x09''\x09' "0: display only errors."
+ echo $E ""        '\x09''\x09' "1: display also how many days is the difference"
+ echo $E ""        '\x09''\x09' "2: display also the call sequence of routines.";
+ echo $E ""        '\x09''\x09' "3: display all dignostic messages."
+ echo $E "  --help"      '\x09' "Display $program options and exit."  ;
+ echo $E "  --version"   '\x09' "Display $program version and exit."  ;
+
+}
+
+help() {
+
+usage ; 
+
+echo $E ""  ;
+echo "The script converts a given date-time to the Julian Calendar,"  ;
+echo "if no date-time is given, it converts the system date-time,"  ;
+echo "otherwise a date since 1582-10-15 is expected."
+
+echo $E ""  ;
+echo $E 'The date-time must have the same format printed by the command:' ;
+echo $E 'date +"%Y-%m-%d,%H:%M,%j"' ;
+echo $E ""  ;
+
+}
+arguments() {
+ mode=1 ;
+ i=0;
+ argv[0]=$(basename $0) ;
+ let argc=( 1 ) ;
+ for arg in $@ ; do
+    argv[$argc]=$arg;
+    if [ $verbose -gt 4 ] ; then
+        echo "argv[$argc] = ${argv[argc]}" ;
+    fi ;
+    let argc=($argc+ 1 ) ;
+ done ;
+ if [ $verbose -gt 4 ] ; then
+     echo argc=$argc ;
+ fi
+ for (( i=1, last=$argc-1 ; i < $argc ; i++ )) ; do
+
+    arg=${argv[$i]};
+#   echo arg=$arg;
+    if [ "$arg" = "--help" ] ||  [ "${arg:0:2}" = "-h" ] ; then
+        mode=2 ;
+        help ;
+        if [ $i -eq 1 ] && [ $argc -eq 2 ] ; then exit 0; else exit -1 ; fi ;
+    elif [ "$arg" = "--version" ] ||  [ "${arg:0:2}" = "-v" ] ||  [ "${arg:0:2}" = "-V" ]; then
+        mode=2 ;
+        show_version ;
+        if [ $i -eq 1 ] && [ $argc -eq 2 ] ; then exit 0; else exit -1 ; fi ;
+    elif [ "${arg:0:7}" = "--debug" ] ; then
+        mode=1 ; 
+        mode1=1;
+        if [ "${arg:7:1}" = "=" ] && [ ! ${#arg} -lt 8 ]; then
+            dbglevel=${arg:8:1} ;
+            if [ ! "$dbglevel" = "0" ] && 
+               [ ! "$dbglevel" = "1" ] && 
+               [ ! "$dbglevel" = "2" ] && 
+               [ ! "$dbglevel" = "3" ] ; then
+                dbglevel=0;
+                usage ;
+                echo "error: After \"--debug\" you can optionally specify a debug level up to 5, the most verbose. Debug Level 0 is assumed as don't debug." 1>&2 ;
+                exit -1 ;
+            fi ;
+        else
+            dbglevel=1;
+        fi ;
+        verbose=$dbglevel ;
+        continue ;
+    elif [ "$arg" = "--use" ] ; then
+        mode=1 ;
+        mode1=1;
+#       echo i=$i, argc=$argc;
+        if [ $i -eq $last ] ; then
+            usage ;
+            echo "After \"--use\" you should specify a date-time." 1>&2 ;
+            exit -1 ;
+        elif [ ! "${argv[( $i + 1 )]}" = "" ] &&
+             [ ! "${argv[( $i + 2 )]}" = "" ]; then
+              usage ;
+              echo "After option \"--use\" you should specify only a date-time, not: ${argv[( $i + 2 )]}" 1>&2 ;
+              on_exit -1;
+        elif [ ! "${argv[( $i + 1 )]}" = "" ] ; then
+            tmp="${argv[( $i + 1 )]}" ;
+            if [ "${tmp:0:1}" = "-" ] ; then 
+             usage ;
+             echo "After option \"--use\" you should specify a date-time, not another option." 1>&2 ;
+             exit -1 ;              
+            fi
+            tmp_strnum=${argv[( $i + 1 )]};
+#           Validate the year
+            get_number ${tmp_strnum:0:4} ;
+            let tmp_num=( ${number} ) ;
+            if [ $tmp_num -lt 1582 ] ; then
+             echo "Only a date since 1582-10-15 is acceptable." 1>&2 ;
+             echo "year=${tmp_strnum:0:4}" 1>&2 ;
+             exit -1 ;              
+            fi
+            arg_year=$tmp_num;
+
+#           Validate the month
+            get_number ${tmp_strnum:5:2} ;
+            let tmp_num=( ${number} ) ;
+            if [ ! $tmp_num -le 12 ]; then
+             echo "Only a month between 1-12 is acceptable." 1>&2 ;
+             echo "month=${tmp_strnum:5:2}" 1>&2 ;
+             exit -1 ;              
+            fi
+            arg_mm=${tmp_strnum:5:2};
+
+#           Validate the day
+            get_number ${tmp_strnum:8:2} ;
+            let tmp_num=( ${number} ) ;
+            if [ ! $tmp_num -le 31 ]; then
+             echo "Only a day between 1-31 is acceptable." 1>&2 ;
+             echo "day=${tmp_strnum:8:2}" 1>&2 ;
+             exit -1 ;              
+            fi
+            arg_dd=${tmp_strnum:8:2};
+
+            if [ $arg_year -eq 1582 ] ; then
+              if [ $arg_mm -lt 10 ] ; then
+                echo "Only a date since 1582-10-15 is acceptable." 1>&2 ;
+                exit -1 ;
+              elif [ $arg_mm -eq 10 ] && [ $arg_dd -lt 15 ] ; then
+                echo "Only a date since 1582-10-15 is acceptable." 1>&2 ;
+                exit -1 ;               
+              fi ;             
+            fi ;
+
+#           Validate the year day
+            let dtlen=${#tmp_strnum};
+            if [ $dtlen -eq 10 ] ; then
+              map_to_day_of_year "$arg_year" "${arg_mm}" "${arg_dd}" ;
+              let tmp_num=( ${day_of_year} );
+              if [ ${day_of_year} -le 9 ] ; then
+                 tmp_strnum=$tmp_strnum-00:01-00${day_of_year};
+              elif [ ${day_of_year} -le 99 ] ; then
+                 tmp_strnum=$tmp_strnum-00:00-0${day_of_year};
+              else
+                 tmp_strnum=$tmp_strnum-00:00-${day_of_year};
+              fi
+           fi
+            
+            get_number ${tmp_strnum:17:3} ;
+            let tmp_num=( ${number} ) ;
+            if [ ! $tmp_num -le 366 ]; then
+             echo "Only a year day between 1-366 is acceptable." 1>&2 ;
+             echo "year day=${tmp_strnum:17:3}" 1>&2 ;
+             exit -1 ;            
+            elif [   $tmp_num -eq 0 ] ; then
+             echo "error: day of year is zero or ommited" ;
+             exit -1 ;
+            fi
+
+#           validate mapping of year/day of year -> month/day 
+            let arg_day=$tmp_num;
+
+#           echo "calls: map_day_of_year $arg_year $arg_day"
+	       map_day_of_year $arg_year $arg_day ;
+            if [   "${map_mm}" = "${arg_mm}" ] &&
+               [   "${map_dd}" = "${arg_dd}" ]; then
+               echo "passed" > /dev/null ;
+            else  
+                 echo "error: or a script bug; day $arg_day corresponds to date  $arg_year-${map_mm}-${map_dd}" 1>&2;
+                 echo "error: read  ${arg_mm}-${arg_dd} " 1>&2 ; 
+               exit -1;
+            fi
+
+            let i=( $i + 1 ) ;
+            newsrun=1;
+            arg_use="--use" ;
+            lc_date_time=${tmp_strnum};
+            today=${lc_date_time:0:10};
+            dayofyear=${lc_date_time:17:3};
+
+            continue ;
+        else
+            usage ;
+            on_exit -1;
+        fi ;
+    elif [ "${arg:0:1}" = "-" ] ; then
+        mode=2 ;
+        usage ; exit -1 ;
+    else
+        usage ;
+        echo "error: unexpected argument ${arg}" ;
+        exit -1; 
+    fi
+ done ;
+
+ validate ;
+
+}
+
+validate() {
+
+ if [ "${arg_use}" = "" ] ; then 
+    if [ $verbose -ge 2 ] ; then
+        echo will "map_day_of_year ${lc_date_time:0:4} ${lc_date_time:17:3}" ;
+        echo should give "${lc_date_time:5:2}" "${lc_date_time:8:2}"         ;
+    fi
+
+    get_number ${lc_date_time:0:4} ;
+    let def_year=( ${number} ) ;
+
+    get_number ${lc_date_time:17:3} ;
+    let def_day=( ${number} ) ;
+
+    map_day_of_year ${def_year} ${def_day} ;
+    if [   "${map_mm}" = "${lc_date_time:5:2}" ] &&
+       [   "${map_dd}" = "${lc_date_time:8:2}" ]; then
+       echo "passed" > /dev/null ;
+    else  
+       echo "error: script internal bug; day $arg_day corresponds to date  $arg_year-${map_mm}-${map_dd}" 1>&2;
+       exit -1;
+    fi
+ fi
+
+}
+
+get_number() {
+ strnum=$1 ;
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: get_number( $1 ) " ;
+ fi
+
+ strnumlen=${#strnum} ;
+
+ number=0;
+
+ for (( lc_n=0 ; lc_n < $strnumlen ; lc_n++ )) ; do
+     let number=10*$number ;
+
+     case ${strnum:lc_n:1} in
+
+      0) let number=( $number + 0 ) ; ;;
+      1) let number=( $number + 1 ) ; ;;
+      2) let number=( $number + 2 ) ; ;;
+      3) let number=( $number + 3 ) ; ;;
+      4) let number=( $number + 4 ) ; ;;
+      5) let number=( $number + 5 ) ; ;;
+      6) let number=( $number + 6 ) ; ;;
+      7) let number=( $number + 7 ) ; ;;
+      8) let number=( $number + 8 ) ; ;;
+      9) let number=( $number + 9 ) ; ;;
+      *) echo "error: invalid number format $strnum" ; exit -1 ;;
+     esac 
+ done ;
+
+#log " numeric of $strnum is $number " ;
+
+}
+
+
+#
+# Format Date
+#
+format_date() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: format_date( $1 ) " ;
+ fi
+
+  if [ "$1" = "" ] ; then
+#  l_today=$(date --iso-8601=date);
+   lc_date_time=$(date +"%Y-%m-%d,%H:%M");
+   l_today=${lc_date_time:0:10};
+#  echo lc_date_time=$lc_date_time;
+   l_date=${lc_date_time:0:10};
+  else
+   l_today=$1;
+  fi
+
+#    hour=$( date +"%H" ) ;
+     hour="${lc_date_time:11:2}";
+      min="${lc_date_time:14:2}";
+     time="${lc_date_time:11:5}";
+  weekday=$( date +"%u" ) ;
+
+  yyyy=${l_today:0:4}
+    mm=${l_today:5:2}
+    dd=${l_today:8:2}
+
+
+  intdate="${yyyy}${mm}${dd}";
+  invdate="${dd}${mm}${yyyy}";
+
+  if [ $verbose -gt 4 ] ; then
+    log yyyy=$yyyy;
+    log   mm=$mm;
+    log   dd=$dd;
+    log internal=$intdate;
+    log inverted=$invdate;
+  fi ;
+
+}
+
+#
+# How many days have passed according to the old calendar?
+#
+get_dayspassedold(){
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: get_dayspassedold( $1 ) " ;
+ fi
+
+ dayspassedold=0
+
+ l_date_time=$1;
+
+ get_number ${l_date_time:0:4}    ;
+ let this_year=( ${number} ) ;
+ let last_year=( $this_year - 1 );
+
+#let last_year=( 2101 ) ;
+ convert_numeric_year_to_days_old $last_year ;
+ 
+# echo "Days passed until 31/12 of $last_year "
+# echo "old calendar:$dayspassedold" ;
+  
+ get_number ${l_date_time:17:3}    ;
+ let l_dayofyear=( ${number} ) ;
+
+#echo l_dayofyear=$l_dayofyear;
+
+ let dayspassedold=( $dayspassedold + l_dayofyear ) ;
+
+# echo "Days passed until ${l_date_time:8:2}/${l_date_time:5:2} of $this_year "
+# echo "old calendar:$dayspassedold" ;
+
+}
+
+convert_year_to_days_old() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: convert_year_to_days_old( $1 ) " ;
+ fi
+
+# echo "year is" $1 ;
+ l_yyyy=$1 ;
+ 
+ get_number $l_yyyy    ;
+ let l_year=( ${number} ) ;
+
+ convert_numeric_year_to_days_old $l_year ;
+ 
+ 
+}
+
+convert_year_to_days_new() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: convert_year_to_days_new( $1 ) " ;
+ fi
+
+ l_yyyy=$1 ;
+ 
+ get_number $l_yyyy    ;
+ let l_year=( ${number} ) ;
+
+ convert_numeric_year_to_days_new $l_year ;
+ 
+ 
+}
+convert_numeric_year_to_days_new() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: convert_numeric_year_to_days_new( $1 ) " ;
+ fi
+
+ let dayspassednew=(0);
+
+# echo "year is" $1 ;
+ l_last_year=$1 ;
+ 
+# echo l_last_year=$l_last_year ;
+ 
+
+# let l_last_year=(399) it does floor() 
+
+ let l_disekta_passed=( $l_last_year / 4 ) ;
+# echo l_disekta_passed=$l_disekta_passed   ;
+
+ let l_100_passed=( $l_last_year / 100 ) ;
+ let l_400_passed=( $l_last_year / 400 ) ;
+
+# echo l_100_passed=$l_100_passed   ;
+# echo l_400_passed=$l_400_passed   ;
+
+ let l_disekta_passed=( $l_disekta_passed -  $l_100_passed ) ;
+ let l_disekta_passed=( $l_disekta_passed +  $l_400_passed ) ;
+
+# echo l_disekta_passed=$l_disekta_passed
+
+# add the two (2) missing days.
+#
+ let l_disekta_passed=( $l_disekta_passed +  2 ) ;
+
+ let dayspassednew=( $l_last_year * 365 ) ;
+ let dayspassednew=( $dayspassednew + ${l_disekta_passed} ) ;
+
+}
+
+convert_numeric_year_to_days_old() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: convert_numeric_year_to_days_old( $1 ) " ;
+ fi
+
+ let dayspassedold=(0);
+
+# echo "year is" $1 ;
+ l_last_year=$1 ;
+ 
+#echo l_last_year=$l_last_year ;
+ 
+
+# let l_last_year=(399) it does floor() 
+
+ let l_disekta_passed=( $l_last_year / 4 ) ;
+# echo l_disekta_passed=$l_disekta_passed   ;
+
+ let dayspassedold=( $l_last_year * 365 ) ;
+ let dayspassedold=( $dayspassedold + ${l_disekta_passed} ) ;
+
+}
+
+
+#
+# How many days have passed according to the new calendar?
+#
+get_dayspassednew(){
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: get_dayspassednew( $1 ) " ;
+ fi
+
+ dayspassednew=0
+
+ l_date_time=$1;
+
+ get_number ${l_date_time:0:4}    ;
+ let this_year=( ${number} ) ;
+ let last_year=( $this_year - 1 );
+
+#let last_year=( 2101 ) ;
+ convert_numeric_year_to_days_new $last_year ;
+ 
+# echo "Days passed until 31/12 of $last_year "
+# echo "new calendar:$dayspassednew" ;
+  
+ get_number ${l_date_time:17:3}    ;
+ let l_dayofyear=( ${number} ) ;
+
+# echo l_dayofyear=$l_dayofyear;
+
+ let dayspassednew=( $dayspassednew + l_dayofyear ) ;
+
+# echo "Days passed until ${l_date_time:8:2}/${l_date_time:5:2} of $this_year "
+# echo "new calendar:$dayspassednew" ;
+
+}
+
+get_old_calendar_days_diff() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: get_old_calendar_days_diff( $1 ) " ;
+ fi
+
+old_calendar_days_diff=0;
+
+l_date_time=$1;
+
+let old_calendar_days_diff=(0);
+
+l_today=${l_date_time:0:4};
+
+get_dayspassedold  $l_date_time ;
+
+get_dayspassednew  $l_date_time ;
+
+let old_calendar_days_diff=( $dayspassedold - $dayspassednew );
+
+}
+
+
+map_to_day_of_year() {
+
+  if [ $verbose -ge 2 ] ; then
+    echo "calls: map_to_day_of_year( $1 , $2 , $3 ) " ;
+  fi
+
+  let day_of_year=(0);
+  year=$1;
+  map_mm=$2;
+  map_dd=$3;
+
+  get_number $map_mm ;
+  let  month=$number ;
+
+  get_number $map_dd ;
+  let    day=$number ;
+
+  let   M4=( $year % 4   )
+  let M400=( $year % 400 )
+  let M100=( $year % 100 )
+
+  let lc_leap=(0);
+  if [ $M100 -eq 0 ] && [ $M400 -ne 0 ]; then
+     let lc_leap=(0);
+  elif [ $M400 -eq 0 ]; then
+     let lc_leap=(1);
+  elif [ $M4   -eq 0 ] ; then
+    let lc_leap=(1);
+  fi
+
+  lc_m[1]=0;
+  let   lc_m[2]=(31) ;
+  let   lc_m[3]=(59 + $lc_leap   ) ;
+  let   lc_m[4]=(31 + ${lc_m[3]} ) ;
+  let   lc_m[5]=(30 + ${lc_m[4]} ) ;
+  let   lc_m[6]=(31 + ${lc_m[5]} ) ;
+  let   lc_m[7]=(30 + ${lc_m[6]} ) ;
+  let   lc_m[8]=(31 + ${lc_m[7]} ) ;
+  let   lc_m[9]=(31 + ${lc_m[8]} ) ;
+  let  lc_m[10]=(30 + ${lc_m[9]} ) ;
+  let  lc_m[11]=(31 + ${lc_m[10]}) ;
+  let  lc_m[12]=(30 + ${lc_m[11]}) ;
+
+
+# After is defintely an error
+  let day_of_year=( ${lc_m[month]} + ${day} );
+
+}
+
+
+map_day_of_year() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: map_day_of_year( $1 , $2 ) " ;
+ fi
+
+# arguments
+#
+  old_year=$1;
+  old_dayofyear=$2;
+
+# return values
+#
+  map_mm="01"; map_dd="01"
+
+  let   M4=( $old_year % 4   )
+  let M400=( $old_year % 400 )
+  let M100=( $old_year % 100 )
+
+  let lc_leap=(0);
+  if [ $M4   -eq 0 ] ; then
+    if [ $M400 -eq 0 ] ; then
+      let lc_leap=(1);
+    elif [ $M100 -ne 0 ] ; then
+      let lc_leap=(1);
+    fi
+  fi
+
+
+  lc_m[0]=0;
+  lc_m[1]=31;
+  let  lc_m[2]=(59 + $lc_leap) ;
+  let  lc_m[3]=(31 + ${lc_m[2]}) ;
+  let  lc_m[4]=(30 + ${lc_m[3]}) ;
+  let  lc_m[5]=(31 + ${lc_m[4]}) ;
+  let  lc_m[6]=(30 + ${lc_m[5]}) ;
+  let  lc_m[7]=(31 + ${lc_m[6]}) ;
+  let  lc_m[8]=(31 + ${lc_m[7]}) ;
+  let  lc_m[9]=(30 + ${lc_m[8]}) ;
+  let lc_m[10]=(31 + ${lc_m[9]}) ;
+  let lc_m[11]=(30 + ${lc_m[10]}) ;
+  let lc_m[12]=(31 + ${lc_m[11]}) ;
+
+  for ((  m = 1 ;  m < 13 ;  m++ )) ; do
+
+     if  [ $old_dayofyear -le ${lc_m[m]} ] ; then
+
+         if [ $m -lt 10 ] ; then
+            map_mm="0$m";
+         else
+            map_mm="$m";
+         fi
+
+         let lc_remain=( $old_dayofyear - ${lc_m[( $m - 1)]} ) ;
+
+         if [ $lc_remain -lt 10 ] ; then
+            map_dd="0$lc_remain";
+         else
+            map_dd="$lc_remain";
+         fi
+
+         break ;
+     fi
+
+  done ;
+
+}
+
+map_day_of_year_old() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: map_day_of_year( $1 , $2 ) " ;
+ fi
+
+# arguments
+#
+  old_year=$1;
+  old_dayofyear=$2;
+
+# return values
+#
+  map_mm="01"; map_dd="01"
+
+  let   M4=( $old_year % 4   )
+
+  let lc_leap=(0);
+  if [ $M4   -eq 0 ] ; then
+      let lc_leap=(1);
+  fi
+
+  lc_m[0]=0;
+  lc_m[1]=31;
+  let  lc_m[2]=(59 + $lc_leap) ;
+  let  lc_m[3]=(31 + ${lc_m[2]}) ;
+  let  lc_m[4]=(30 + ${lc_m[3]}) ;
+  let  lc_m[5]=(31 + ${lc_m[4]}) ;
+  let  lc_m[6]=(30 + ${lc_m[5]}) ;
+  let  lc_m[7]=(31 + ${lc_m[6]}) ;
+  let  lc_m[8]=(31 + ${lc_m[7]}) ;
+  let  lc_m[9]=(30 + ${lc_m[8]}) ;
+  let lc_m[10]=(31 + ${lc_m[9]}) ;
+  let lc_m[11]=(30 + ${lc_m[10]}) ;
+  let lc_m[12]=(31 + ${lc_m[11]}) ;
+
+  for ((  m = 1 ;  m < 13 ;  m++ )) ; do
+
+     if  [ $old_dayofyear -le ${lc_m[m]} ] ; then
+
+         if [ $m -lt 10 ] ; then
+            map_mm="0$m";
+         else
+            map_mm="$m";
+         fi
+
+         let lc_remain=( $old_dayofyear - ${lc_m[( $m - 1)]} ) ;
+
+         if [ $lc_remain -lt 10 ] ; then
+            map_dd="0$lc_remain";
+         else
+            map_dd="$lc_remain";
+         fi
+
+         break ;
+     fi
+
+  done ;
+
+}
+
+get_old_date_time() {
+
+ if [ $verbose -ge 2 ] ; then
+    echo "calls: get_old_date_time( $1 ) " ;
+ fi
+
+
+l_date_time=$1;
+old_date_time="";
+
+get_old_calendar_days_diff $l_date_time ;
+
+if [ $verbose -gt 0 ] ; then
+  echo "diffs: $old_calendar_days_diff" ;
+fi
+
+get_number ${l_date_time:17:3}    ;
+let l_dayofyear=( ${number} ) ;
+
+l_today=${l_date_time:0:10};
+
+
+# subtract the diff from 
+let dayspassedcnv=($dayspassedold - $old_calendar_days_diff );
+
+  l_yyyy=${l_today:0:4}
+    l_mm=${l_today:5:2}
+    l_dd=${l_today:8:2}
+
+ get_number $l_yyyy    ;
+ let l_year=( ${number} ) ;
+
+ get_number $l_mm    ;
+ let l_month=( ${number} ) ;
+
+ get_number $l_dd    ;
+ let l_day=( ${number} ) ;
+  
+ let old_year=( 0 );
+ let old_dayofyear=( 0 ) ;
+
+ for (( i = $l_year ; i > 1580 ; i-- )) ; do
+
+   convert_numeric_year_to_days_old $i ;
+   
+   if [ $verbose -gt 2 ] ; then
+     echo i=$i , dayspassedold=$dayspassedold , dayspassedcnv=$dayspassedcnv ;
+   fi
+    
+   if [ $dayspassedold -lt $dayspassedcnv   ] ; then 
+
+      let old_year=( $i + 1 );
+      let old_dayofyear=( $dayspassedcnv - $dayspassedold ) ;
+
+      if [ $verbose -gt 2 ] ; then
+       echo "according to old calendar the date '${l_date_time}' maps to year $old_year, day $old_dayofyear" ;
+      fi
+
+      map_mm="01"; map_dd="01"
+      map_day_of_year_old ${old_year} $old_dayofyear ;
+
+      if [ $old_dayofyear -lt 10 ] ; then
+       fmt_old_day="00$old_dayofyear";
+      elif [ $old_dayofyear -lt 100 ] ; then
+       fmt_old_day="0$old_dayofyear";
+       else
+       fmt_old_day="$old_dayofyear";
+      fi
+      old_date_time="${old_year}-${map_mm}-${map_dd},${l_date_time:11:5},$fmt_old_day";
+      dayspassednew=$dayspassednew_saved ;
+      return ;
+      
+      break;
+   fi
+
+ done ;
+# loop until 
+
+ if [ $verbose -gt 2 ] ; then
+   echo "according to old calendar the date '${l_date_time}' maps to year $old_year, day $old_dayofyear" ;
+ fi
+
+ return ;
+
+ 
+}
+
+
+#
+# Main Program
+#
+
+arguments $@ ;
+
+
+format_date $today ;
+
+#lc_date_time="2016:02:13:${lc_date_time:11:5}:044"
+#echo lc_date_time=$lc_date_time;
+
+
+
+#get_dayspassedold  $lc_date_time ;
+#echo "---------------------------------------------------------";
+#get_dayspassednew  $lc_date_time ;
+#echo "---------------------------------------------------------";
+#get_old_date_time $lc_date_time ;
+#echo "---------------------------------------------------------";
+#echo old_date_time=$old_date_time;
+#exit 0;
+
+get_old_date_time $lc_date_time ;
+echo "$old_date_time" ;
+

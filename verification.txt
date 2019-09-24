@@ -1,0 +1,63 @@
+
+ Ev. Drikos (drikosev@gmail.com)
+ March 13, 2018
+ Athens, Greece.
+
+ To verify the "easter" script, I've compared it against the 6th century
+ Paschal Table compiled by Dionysius Exiguus, which is written in Latin.
+ In specific, I've compared the period 513-626 to the period 2109-2222.
+
+ The table has been translated in English by Michael Deckers, who also 
+ translated the calendrical content of that document into modern math
+ notation. The compiled document can be found in various WEB Sites, ie: 
+ http://hbar.phys.msu.su/gorm/chrono/paschata.htm
+
+ Also, an alternative translation of the Paschal Table can be found at:
+ http://www.nabkal.de/osterstreit/anhang/dionysius_2.html
+ http://www.nabkal.de/osterstreit/anhang/dionysius_3.html
+
+ Dionysius has compiled a period of 114 years (6 Metonic Cycles). He has
+ mapped the first cycle to Diocletianus era and the following five to the 
+ AD era. In essence, it's the period 513 to 626, whereas the bash script
+ accepts values from year 1924 and later. 
+
+ Having spent some time on data analysis, I figured out the Easter dates
+ of a specific period recur every 532 (19*28) years. As the Paschal 14th
+ theoretically recurs every 19 years in the same dates, whereas weekdays
+ always recur in the same dates every 28 years. This is just how the 
+ algorithm behaves though.
+
+ Nowadays however, full moons occur about 4 days earlier than the algorithm
+ predicts. An explanation might be that the Metonic Cycle (about 6939.6889
+ days) is likely a bit shorter than the average 19 year period of the Julian
+ Calendar. A 19 year period is either 6939 days if the fourth year is leap
+ or 6940 days otherwise and in the long term the average value approaches 
+ the number of 6939.75 days. A 3 days error in 2014 seems to be quite small.
+
+ Note that a new moon or full moon may recur ie after 1468 (4*367) years on
+ the same month date but if this number isn't divisible by 19, then the
+ Metonic cycle error keeps accumulated.
+
+ Also, the vernal (spring) equinox slips backward in the Julian calendar 
+ and nowadays falls on March 7-8 (Gregorian Date: March 20-21) whereas the
+ algorithm computes the so called Paschal 14th after March 20.
+
+ Regarding the algorithms comparison, the dates calculated by the script 
+ "easter", which implements the Gauss algorithm, agree with the dates 
+ calculated by the formulas presented by Deckers, which in turn agree with
+ the results published by Dionysius Exiguus.
+
+ The conclusion here is that the bash scripts "easter" & "julian" have 
+ successfully passed this test. 
+
+
+ --------------------------------------------------------------------------
+
+ Appendix A
+ ----------
+
+  Below you will find the results computed by the script "easter".
+
+
+         Easter Dates
+  Converted to Julian Calendar  ----------------------------  2109-04-07,00:00,097  2110-03-30,00:00,089  2111-04-19,00:00,109  2112-04-03,00:00,094  2113-03-26,00:00,085  2114-04-15,00:00,105  2115-03-31,00:00,090  2116-04-19,00:00,110  2117-04-11,00:00,101  2118-04-03,00:00,093  2119-04-16,00:00,106  2120-04-07,00:00,098  2121-03-30,00:00,089  2122-04-19,00:00,109  2123-04-04,00:00,094  2124-03-26,00:00,086  2125-04-15,00:00,105  2126-03-31,00:00,090  2127-04-20,00:00,110  2128-04-11,00:00,102  2129-03-27,00:00,086  2130-04-16,00:00,106  2131-04-08,00:00,098  2132-03-23,00:00,083  2133-04-12,00:00,102  2134-04-04,00:00,094  2135-04-24,00:00,114  2136-04-08,00:00,099  2137-03-31,00:00,090  2138-04-20,00:00,110  2139-04-05,00:00,095  2140-03-27,00:00,087  2141-04-16,00:00,106  2142-04-08,00:00,098  2143-03-24,00:00,083  2144-04-12,00:00,103  2145-04-04,00:00,094  2146-04-24,00:00,114  2147-04-09,00:00,099  2148-03-31,00:00,091  2149-04-20,00:00,110  2150-04-05,00:00,095  2151-03-28,00:00,087  2152-04-16,00:00,107  2153-04-01,00:00,091  2154-04-21,00:00,111  2155-04-13,00:00,103  2156-03-28,00:00,088  2157-04-17,00:00,107  2158-04-09,00:00,099  2159-03-25,00:00,084  2160-04-13,00:00,104  2161-04-05,00:00,095  2162-03-28,00:00,087  2163-04-10,00:00,100  2164-04-01,00:00,092  2165-04-21,00:00,111  2166-04-06,00:00,096  2167-03-29,00:00,088  2168-04-17,00:00,108  2169-04-09,00:00,099  2170-03-25,00:00,084  2171-04-14,00:00,104  2172-04-05,00:00,096  2173-04-25,00:00,115  2174-04-10,00:00,100  2175-04-02,00:00,092  2176-04-21,00:00,112  2177-04-06,00:00,096  2178-03-29,00:00,088  2179-04-18,00:00,108  2180-04-02,00:00,093  2181-03-25,00:00,084  2182-04-14,00:00,104  2183-03-30,00:00,089  2184-04-18,00:00,109  2185-04-10,00:00,100  2186-03-26,00:00,085  2187-04-15,00:00,105  2188-04-06,00:00,097  2189-03-29,00:00,088  2190-04-11,00:00,101  2191-04-03,00:00,093  2192-04-22,00:00,113  2193-04-14,00:00,104  2194-03-30,00:00,089  2195-04-19,00:00,109  2196-04-10,00:00,101  2197-03-26,00:00,085  2198-04-15,00:00,105  2199-04-07,00:00,097  2200-03-22,00:00,082  2201-04-11,00:00,101  2202-04-03,00:00,093  2203-04-23,00:00,113  2204-04-07,00:00,098  2205-03-30,00:00,089  2206-04-19,00:00,109  2207-04-04,00:00,094  2208-03-26,00:00,086  2209-04-15,00:00,105  2210-03-31,00:00,090  2211-04-20,00:00,110  2212-04-11,00:00,102  2213-04-03,00:00,093  2214-04-16,00:00,106  2215-04-08,00:00,098  2216-03-30,00:00,090  2217-04-19,00:00,109  2218-04-04,00:00,094  2219-03-27,00:00,086  2220-04-15,00:00,106  2221-03-31,00:00,090  2222-04-20,00:00,110

@@ -1,0 +1,174 @@
+-The bash script "easter" calculates the Greek Orthodox Easter Day (from 1924).
+
+-The bash script "julian" converts a given Gregorian Calendar date (from 1582) 
+ to the corresponding date of the Julian Calendar. These two calendars diverge 
+ 3 days every 400 years (on the average almost 1 day every 7 Metonic cycles).
+
+ If no date is specified, the script converts the current date returned by the
+ bash shell command "date" with the following format:
+
+ $ date +"%Y-%m-%d,%H:%M,%j"
+ 2018-02-27,17:35,058
+ $ ./julian
+ 2018-02-14,17:35,045
+
+ Here are a few typical examples:
+
+ $ ./julian --use 2101-01-15,00:01,15
+ 2101-01-01,00:01,001
+ $ ./julian --use 1901-01-14,00:01,14
+ 1901-01-01,00:01,001
+ $ ./julian --use 1801-01-13,00:01,13
+ 1801-01-01,00:01,001
+ $ ./julian --use 1701-01-12,00:01,12
+ 1701-01-01,00:01,001
+ $ ./julian --use 1582-10-15,00:00,288
+ 1582-10-05,00:00,278
+
+
+ Please note that there is a 2 days gap between the Julian and the Gregorian
+ calendar. The "julian" script converts dates based on the assumption that the
+ gap was introduced in the Gregorian calendar right from the start. Otherwise
+ the results wouldn't correspond to the current dates of the Julian calendar.
+
+-The file "verification.txt" describes a comparison between the 6th century
+ Paschal Table computed by Dionysius Exiguus and the dates computed by the
+ bash script "easter" for a 114 years period (6 Metonic cycles) beginning in
+ the 22nd century. The comparison is fully successful since Feb 25, 2018.
+
+   
+-The bash script "day" accepts a date-time of the Julian Calendar and computes
+ how many days have passed from Dec 31, 1 BC.
+
+ Two points make a line. The reader should already know basic math like that in
+ order to understand the contents of this page and properly use i.e. the scripts
+ "julian" and "day". The most qualified may benefit even more from math skills.
+
+ According to Plato's "Republic", Socrates believed that skills in geometry, 
+ astronomy, and especially mathematics (522c10-526c5) are crucial in the 
+ education of philosophers as math can haul a philosopher to the light (521c). 
+
+ Since then some time has passed but personally I accept Socrates' opinion
+ without any further proof.
+
+
+ Known Issues      
+ --------------
+ [Apr 12, 2018]
+
+-Admittedly, I'm not an astronomer. If you find any errors in this project, an 
+ e-mail will be highly appreciated.
+
+-Regarding the Metonic cycle error, it seems to be on the average almost 1 day
+ every 304 Julian years, known as the Hipparchic cycle. Wikipedia mentions that
+ the 1 day correction proposed by Hipparchus deviates only by 0.014 days. 
+
+ Having spent some time doing the math and then collecting data from two online
+ servers (moongiant.com & timeanddate.com), I could identify a stable recurring 
+ cycle where the 1 day error applies firmly to the Julian Calendar for the March 
+ full moons. The years sequencing of this recursion is defined by the function: 
+
+ y(e) = 16 * 19 * e + a, for e=0..15 and a=1  (likely also a=0, a=5, a=17, ...)
+
+ If you start counting from March 28, 1 AD then every 304 years you find a full 
+ moon one day earlier, finally in year 4561 on March 13 (note that the monthly
+ calendar in timeanddate.com accepts dates lower than 4000 AD). To verify these
+ dates, I've taken into account regional local time GMT+2 in Athens/Alexandria.
+
+
+-Regarding the error of a 32 years cycle, it's likely between 6.1 and 6.9 days,  
+ which means that a 33 lunar years period is just a week longer than this cycle.
+
+ Every 14 cycles the accumulated error is nearly 3 lunar months, in which case 
+ we find a full moon about 3 days earlier. I have identified a stable recurring
+ cycle where this 3 days error applies firmly to the Julian Calendar. The years
+ sequencing of this recursion is defined by the function:
+
+ x(e) = 14 * 32 * (e/3) + c, for e=3*i, i=0..10 and c=33
+
+ If you start counting from April 3, 33 AD then every 448 years you find a full 
+ moon 3 days earlier, finally in year 4513 on March 4. To verify these dates, I
+ have taken into account again regional local time GMT+2 in Athens/Alexandria.
+ 
+ In addition to the Hipparchic cycle, this recursion confirms also precisely the
+ full moon on March 22, 1825 (April 3, 1825 after the Gregorian calendar reform).
+
+
+-City names like Athens ie aren't unique. The cities mentioned or
+ related to this page are in the Eastern Mediterranean, ie:
+                                           Latitude / Longitude  
+ 1. Athens:                              37.9838° N,  23.7275° E
+ 2. Constantinople (*nowadays Istanbul): 41.0082° N,  28.9784° E
+ 3. Alexandria:                          31.184245° / 29.875605°
+ 4. Jerusalem:                           31.7683° N,  35.2137° E
+
+
+-A Paschal 14th may recur after 95 years on the same month date and weekday, but
+ not always. At first, if we compare the year 316 to 411 ie we see that in 316 
+ the Paschal 14th falls on Saturday March 24, whereas in 411 on Friday March 24.
+
+ At second, if we apply the Metonic cycle error to year 411, we see that only the
+ years 126, 221, 316, 506, 601, and 696 in this series could possibly had also a 
+ new moon in spring on the same month date. This estimation is further restricted
+ by modern astronomic applications between the years 316 and 601. That is, modern
+ applications report that in 316, 411, 506, and 601 a new moon occurred on 10/3.
+ 
+ So, a new moon may recur on the same weekday and month day after 95 years as ie 
+ on Friday, March 10 in 411, 506, and 601 but such a recursion isn't guaranteed.
+
+-Unless I run the Easter algorithm and read the results in year 31, I cannot find  
+ a Jewish Passover on a Saturday, March 24 between the years 26 and 37.
+
+ One can either use the formulas presented in the translation of the Easter Table
+ or simply read in the Easter Table the results of the year 563 (31+532). You can
+ find links to translations in file "verification.txt".
+
+
+-Note that a new moon may recur after 46 years, ie the first new moon of spring 
+ in 1454 (-14+1468) recurs on the same month date in year 1500 (32+1468) or the
+ new moon of spring in 2922 (-14+1468*2) recurs in 2968 (32+1468*2), but I have
+ not managed to identify two consecutive recursions in a row. Possibly, when it
+ happens it's a one time recursion (it doesn't seem useful for error analysis).
+
+ To verify these dates, I've used regional local time GMT+2 in Athens/Alexandria.
+
+
+-According to Wikipedia, the Saros is a period of approximately 223 synodic months
+ (approximately 6585.3211 days, or 18 years, 11 days, 8 hours) which can be used to
+ predict lunar & solar eclipses. See https://en.wikipedia.org/wiki/Saros_(astronomy)
+
+ Using the "day" script, I could confirm a full moon recursion (without an Eclipse):
+
+ α) Sat, March 26 14:38 UTC	              $ ./day --use 0012:03:26,14:38,086	     4103	 ψ) Thu, April  6 22:24 UTC	    $ ./day --use 0030:04:06,22:24,096	     10688	 Days 6585, Hours +7:46                   (manual subtraction)
+
+ The above dates have been found in "moongiant.com". Similarly, I could confirm 
+ also a full moon recursion with an eclipse. The eclipse is reported by NASA at:
+ https://eclipse.gsfc.nasa.gov/LEcat5/LE0001-0100.html
+
+ β) Sun, April 24 22:10 UTC
+    $ ./day --use 0012:04:24,22:10,115
+     4132
+ ω) Sat, May  6 05:41 UTC                 (ἐκαθαρίσθη ο Σάρος)
+    $ ./day --use 0030:05:06,05:41,126     10718
+
+ Days 6585, Hours +7:31                   (manual subtraction)
+ 
+
+ Please note that a period of 6585.3 days might correspond to 18 years and 10.3 
+ days as in the two examples above or to 18 years and 11.3 days if we measured 
+ ie the period between the full moons on 29/3 9 AD and 9/4 27 AD.
+
+ To my understanding, a safe conclusion is that a Saros can be used to predict
+ not only a lunar eclipse but also a full moon without an eclipse as well. At 
+ the same time we've crosschecked a few more results printed by "moongiant.com"
+ for a period in the long past.
+
+ The Ω Eclipse above is reported by NASA as the last one of Saros 41:
+ https://eclipse.gsfc.nasa.gov/LEsaros/LEsaros041.html 
+
+
+-The Greek State adopted the Gregorian calendar in 1923, one year earlier than 
+ the Greek Orthodox Church. See: https://en.wikipedia.org/wiki/Gregorian_calendar
+
+
+
