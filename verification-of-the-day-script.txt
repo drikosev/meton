@@ -1,0 +1,47 @@
+
+ Ev. Drikos (drikosev@gmail.com)
+ Sep 23, 2019
+ Athens, Greece.
+
+
+ The day script accepts dates in the AD era and thus one can't use it directly to
+ compute the days passed between two dates if the older one is in the BC era. Now 
+ we'll see an example that could be used as a basis for such computations. Let us
+ assume we want to compute ie the days passed from Jan 1, 357 BC to Jan 1, 960 AD. 
+
+ Since both years are leap and both months and days are identical we will compute 
+ instead the period from Jan 1, 960 AD until Jan 1, 2276. Because 1316 years have 
+ passed from 357 BC until 960 AD. We now compute and subtract the number of days:
+ 
+   ./day --use 2276-01-01,00:01,001
+   830944
+
+   ./day --use 0960-01-01,00:01,001
+   350275
+   ------
+   480669                               (manual subtraction)
+
+
+  As a proof, we will cross-check the result with three different criteria; namely
+  years, weeks, and moon phases.
+ 
+  If we divide the number 480669 by 365.25 which is the average length of a Julian
+  year, then the result is 1316. So, this period is precisely 1316 years.
+
+  To cross check the weeks we can use a formula from the translation of the Easter
+  table, which reports that both these Julian years start on a Sunday. Indeed, the
+  number 480669 is divisible by 7. So this period is precisely 68667 weeks.
+
+  Finally, we can read from online servers that both dates have a new moon. If we
+  divide 480669 / 29,530588861 then we take the result of 16276,98663 lunar months
+  and even if we divide 480669 / 29,53059426 the result is 16276,98365. Thus, once
+  rounded this period is approximately 16277 lunar months, in both cases. Whereas,
+  the 1468 years cycle gives us a new moon on Jan 1, 1112 AD and 28 divides 1316.
+
+  We therefore conclude that 480669 days passed from Jan 1, 357 BC to Jan 1, 960 AD,
+  which is exactly 1316 years, which is exactly equal to 68667 weeks, which is also
+  approximately 16277 lunar months with an error of less than 18 hours. By taking
+  into account years, weeks, and moon phases we've triple-checked the result.
+  
+  Admittedly, the required actions aren't as simple & convenient as the subtraction
+  of two Julian days and I hope to find the time & improve the day script as needed.
