@@ -6,6 +6,6 @@ integer  :: shift = 133       ;
 
 print *, "--------------------------------------------------------------------------------------------------------------------------"
 print *, "Days of tropical year=", days, "(official value)"
-print *, "So, the Spring equinox shifts one day backwards in the Julian Calendar every", shift , "years"
+print *, "So, the Spring equinox should normally shift one day backwards in the Julian Calendar every", shift , "years"
 
 end program
