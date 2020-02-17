@@ -1,0 +1,51 @@
+	     Lower Limit: 6 Met. Cycles			Upper Limit: 7 Met. Cycles
+
+		Year	SHIFT	Dec Day			Year	SHIFT	Dec Day
+
+Double Event in	-356	0 & -1	(See 1*)	in	-679	0 & -1	(See 1*)
+then after	-356	-1	31	then after	-679	-1	31
+since/after	-242	-2	30	since/after	-546	-2	30
+since/after	-128	-3	29	since/after	-413	-3	29
+since/after	-14	-4	28	since/after	-280	-4	28
+since/after	100	-5	27	since/after	-147	-5	27
+since/after	214	-6	26	since/after	-14	-6	26
+since/after	328	-7	25	since/after	119	-7	25
+since/after	442	-8	24	since/after	252	-8	24
+since/after	556	-9	23	since/after	385	-9	23
+since/after	670	-10	22	since/after	518	-10	22
+since/after	784	-11	21	since/after	651	-11	21
+since/after	898	-12	20	since/after	784	-12	20
+since/after	1012	-13	19	since/after	917	-13	19
+since/after	1126	-14	18	since/after	1050	-14	18
+since/after	1240	-15	17	since/after	1183	-15	17
+since/after	1354	-16	16	since/after	1316	-16	16
+since/after	1468	-17	15	since/after	1449	-17	15 (see 2*)
+since/after	1582	-18	14	since/after	1582	-18	14 (see 2*)
+since/after	1696	-19	13	since/after	1715	-19	13
+since/after	1810	-20	12	since/after	1848	-20	12
+since/after	1924	-21	11	since/after	1981	-21	11
+since/after	2038	-22	10	since/after	2114	-22	10
+since/after	2152	-23	9	since/after	2247	-23	9
+since/after	2266	-24	8	since/after	2380	-24	8
+since/after	2380	-25	7	since/after	2513	-25	7
+
+
+
+Notes
+-----
+
+1. A zero (0) SOL Shift corresponds to January the 1st and the second one
+   within a leap year shall normally correspond to Dec 31.
+
+2. The basis of the above estimations is in the year 1582 when the last
+   calendar reform occurred. I've chosen a date closely following the
+   winter solstice. Dec 15 corresponds to the term "after" of the 1st column,
+   whereas Dec 14 corresponds to the term "since" of the the 1st column.
+
+3. The above limits, 6 and 7 metonic cycles, were chosen because the official
+   value of the tropical year is claimed to be approximately 365.24219 days,
+   yet the honoured person of my project is Meton. So, I've chosen integral
+   numbers of metonic cycles.
+
+4. These limits give length of tropical year between 356.241228 and 356.242481
+
