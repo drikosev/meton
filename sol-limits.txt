@@ -47,5 +47,5 @@ Notes
    yet the honoured person of my project is Meton. So, I've chosen integral
    numbers of metonic cycles.
 
-4. These limits give length of tropical year between 356.241228 and 356.242481
+4. These limits give length of tropical year between 365.241228 and 365.242481
 
