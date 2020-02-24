@@ -2,7 +2,7 @@
 
 		Year	SHIFT	Dec Day			Year	SHIFT	Dec Day
 
-Double Event in	-356	0 & -1	(See 1*)	in	-679	0 & -1	(See 1*)
+Double Event in	-356	0 & -1	(See 1*)     	in	-679	0 & -1	(See 1*)
 then after	-356	-1	31	then after	-679	-1	31
 since/after	-242	-2	30	since/after	-546	-2	30
 since/after	-128	-3	29	since/after	-413	-3	29
