@@ -167,6 +167,11 @@
  https://eclipse.gsfc.nasa.gov/LEsaros/LEsaros041.html 
 
 
+ Note: The reader should notice that all computations above are based on full
+       moon events, not new moon plus fourteen days. In year 12 ie, we've a new
+       moon on March 11, 13:27 UTC, fifteen days earlier from the 'α' full moon.
+
+
 -Regarding the length of the tropical year, the official value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
  the math I computed a one day deviation from the Julian Year every 128.04 years.
