@@ -169,8 +169,8 @@
 
  Note: The reader should notice that all computations above are based on full
        moon events, not new moon plus fourteen days. In year 12 ie, we've a new
-       moon on March 11, 13:27 UTC, fifteen days earlier from the 'α' full moon.
-       The full moon doesn't coincide with a passover, as also ie on Apr 3, 33.
+       moon on March 11, 13:27 UTC, fifteen days earlier from the 'α' full moon,
+       which doesn't coincide with a passover, as also happens ie on Apr 3, 33.
 
 -Regarding the length of the tropical year, the official value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
