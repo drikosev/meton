@@ -179,8 +179,13 @@
  The file "sol-limits.txt" contains values of the tropical year that correspond
  to one day deviation from the Julian Year precisely every 6 & 7 Metonic cycles.
 
- Whereas, the file "solstice-estimations.txt" contains some estimations for the
- near future for an arbitrarily chosen, yet specific geographic position.
+ If we read the W. Solstice estimations for leap years in Beirut, the closest
+ capital to Ἡλιούπολις (Greek for "Sun City"), with Latitude 33.8938° N, then
+ we see that in 2088 a W. Solstice is estimated for Dec 20 (Dec 9 in Julian) 
+ for the first time. Whereas, the first solstice before the sunrise of Dec 21
+ (Dec 8 in the Julian calendar) is estimated for year 2052:
+ https://www.timeanddate.com/calendar/seasons.html?year=2050&n=34
+
 
 -The Greek State adopted the Gregorian calendar in 1923, one year earlier than 
  the Greek Orthodox Church. See: https://en.wikipedia.org/wiki/Gregorian_calendar
