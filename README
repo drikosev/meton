@@ -172,7 +172,7 @@
        moon on March 11, 13:27 UTC, fifteen days earlier from the 'α' full moon,
        which doesn't coincide with a passover, as also happens ie on Apr 3, 33.
 
--Regarding the length of the tropical year, the official value 365.24219 printed
+-Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
  the math I computed a one day deviation from the Julian Year every 128.04 years.
 
@@ -183,11 +183,19 @@
  capital to the ancient city Ἡλιούπολις (Greek for "Sun City"), with Latitude
  33.8938° N, then we see that in 2088 a W. Solstice is estimated for the first
  time on Dec 20 (Dec 7 in the Julian Calendar). Whereas, the first solstice before
- the sunrise of Dec 21 (Dec 8 in the Julian calendar) is estimated for year 2052:
+ the sunrise of Dec 21 (Dec 8 in the Julian cal.) is estimated for the year 2052:
  https://www.timeanddate.com/calendar/seasons.html?year=2050&n=34
 
  Note here that the first W. Solstice on Dec 21 was estimated for the year 1952:
  https://www.timeanddate.com/calendar/seasons.html?year=1950&n=34
+
+ Whereas, the first solstice clearly before the sunrise of Dec 9 (Julian) in 1916: 
+ https://www.timeanddate.com/calendar/seasons.html?year=1900&n=34
+
+ In both cases the "slip" period in these estimations seems to be 136 years. Which
+ in turn seems to be a value close enough to the one used in the Gregorian calendar.
+ Further, I've not cross checked these estimations with another site or application.
+ Yet, we've an approximative time frame for the solstice "transitions" in our era.
 
  Apart the name etymology, Ἡλιούπολις is an arbitrarily chosen geographic position.
  
