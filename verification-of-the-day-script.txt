@@ -40,8 +40,12 @@
 
   We therefore conclude that 480669 days passed from Jan 1, 357 BC to Jan 1, 960 AD,
   which is exactly 1316 years, which is exactly equal to 68667 weeks, which is also
-  approximately 16277 lunar months with an error of less than 18 hours. By taking
+  approximately 16277 lunar months with an error of less than 18 hours [1]. By taking
   into account years, weeks, and moon phases we've triple-checked the result.
   
   Admittedly, the required actions aren't as simple & convenient as the subtraction
   of two Julian days and I hope to find the time & improve the day script as needed.
+
+
+ Notes
+ [1] According to astropixels.com the error is nearly two hours and forty one minutes.
