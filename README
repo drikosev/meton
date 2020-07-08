@@ -1,4 +1,6 @@
 -The bash script "easter" calculates the Greek Orthodox Easter Day (from 1924).
+ Greece adopted the Gregorian calendar in 1923, one year earlier than the Greek
+ Orthodox Church. See: https://en.wikipedia.org/wiki/Gregorian_calendar
 
 -The bash script "julian" converts a given Gregorian Calendar date (from 1582) 
  to the corresponding date of the Julian Calendar. These two calendars diverge 
@@ -198,11 +200,6 @@
  approximative time frame for the W. solstice movements on the calendar in our era.
 
  Apart the etymology of the city name, Ἡλιούπολις is an arbitrarily chosen geographic
- position.
+ position. Whatsoever, the local time zone seems to be GMT+3. 
  
- 
--The Greek State adopted the Gregorian calendar in 1923, one year earlier than 
- the Greek Orthodox Church. See: https://en.wikipedia.org/wiki/Gregorian_calendar
-
-
 
