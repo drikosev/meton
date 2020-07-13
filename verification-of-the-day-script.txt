@@ -49,5 +49,6 @@
 
  Notes
  [1] According to astropixels.com the error is nearly two hours and forty one minutes.
-     As it seems, the new moon on 1/1/357 BC should be close to the sunset of the day.
-
+     As it seems, the new moon on 1/1/357 BC should be close to the sunset of that day
+     and possibly in some geographic regions this new moon coincided with the sunset. 
+    
