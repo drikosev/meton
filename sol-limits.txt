@@ -47,7 +47,7 @@ Notes
    yet the honoured person of my project is Meton. So, I've chosen integral
    numbers of metonic cycles.
 
-4. These limits give length of tropical year between 365.241228 and 365.242481,
-   and in leap years a backwards "slipping" between 43.30 and 50.53 minutes on
-   average.
-
+4. These limits give length of tropical year between 365.241228 and 365.242481, 
+   and in leap years a backwards "slipping" between 43.30 and 50.53 minutes on 
+   average. 
+   
