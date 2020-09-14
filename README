@@ -32,6 +32,7 @@
  calendar. The "julian" script converts dates based on the assumption that the
  gap was introduced in the Gregorian calendar right from the start. Otherwise
  the results wouldn't correspond to the current dates of the Julian calendar.
+ The term "gap" here is used with respect to the current base of the calendar.
 
 -The file "verification.txt" describes a comparison between the 6th century
  Paschal Table computed by Dionysius Exiguus and the dates computed by the
