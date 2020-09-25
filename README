@@ -175,6 +175,13 @@
        moon on March 11, 13:27 UTC, fifteen days earlier from the 'α' full moon,
        which doesn't coincide with a passover, as also happens ie on Apr 3, 33.
 
+-As it seems the algorithms that compute the moon phases are highly accurate 
+ because I'd found the 'α' and 'ω' full moons above in New Testament by decoding
+ the Book of Luke and thereafter confirmed these dates with modern astronomic
+ applications. Precision is further confirmed by the fact that the 2nd full moon
+ is estimated now as an eclipse. 
+
+
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
  the math I computed a one day deviation from the Julian Year every 128.04 years.
