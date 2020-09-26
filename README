@@ -218,7 +218,9 @@
 -Whereas a spring equinox on March 6 is estimated for the first time in Athens for
  the year 2052, which seems to be also a quite good approximation. With the official
  value of the tropical year (365.24219) I compute an Equinox on March 21 between the
- years 132 AD and 260 AD. Not sure if I'm doing something wrong here.
+ years 132 AD and 260 AD. Not sure if I'm doing a mistake here but with the lowest
+ value (365.241228) found in file 'sol-limits.txt', I compute an Equinox on March 21
+ between the years 342 and 456 AD.
 
 -The lunar-solar, syncrhonizations with weeks at the beginning of a leap year found
  on Sunday, January the 1st of the astronomical year -356 are too rare in the Julian  
