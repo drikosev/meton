@@ -131,7 +131,7 @@
  in 1454 (-14+1468) recurs on the same month date in year 1500 (32+1468) or the
  new moon of spring in 2922 (-14+1468*2) recurs in 2968 (32+1468*2), but I have
  not managed to identify two consecutive recursions in a row. Possibly, when it
- happens it's a one time recursion (it doesn't seem useful for error analysis).
+ happens it's a one time recursion (not so useful for error analysis). [John 2.20]
 
  To verify these dates, I've used regional local time GMT+2 in Athens/Alexandria.
 
