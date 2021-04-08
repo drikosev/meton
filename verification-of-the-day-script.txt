@@ -52,3 +52,10 @@
      As it seems, the new moon on 1/1/357 BC should be close to the sunset of that day
      and possibly in some geographic regions this new moon coincided with the sunset. 
      With modern terms, the estimated lunar-solar gap in Athens was just eight minutes.
+ [2] A new moon on Sunday, January the first in a leap year recurred also in 1576, 616
+     years after 960, but early in the morning (moongiant.com reports 05:29). Such a
+     synchronisation may recur at a minimum of 84 years (whereas that the first full 
+     moon in spring may recur in 95 years). The recurring period of 1316 years is a 
+     combination of 616 and 84 (2*616+84).
+
+
