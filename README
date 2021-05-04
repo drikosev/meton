@@ -142,7 +142,7 @@
 
  Using the "day" script, I could confirm a full moon recursion (without an Eclipse):
 
- α) Sat, March 26 14:38 UTC	              $ ./day --use 0012:03:26,14:38,086	     4103	 ψ) Thu, April  6 22:24 UTC	    $ ./day --use 0030:04:06,22:24,096	     10688	 Days 6585, Hours +7:46                   (manual subtraction)
+ α) Sat, March 26 14:38 UTC	          [Luke 2.42]    $ ./day --use 0012:03:26,14:38,086	     4103	 ψ) Thu, April  6 22:24 UTC	    $ ./day --use 0030:04:06,22:24,096	     10688	 Days 6585, Hours +7:46                   (manual subtraction)
 
  The above dates have been found in "moongiant.com". Similarly, I could confirm 
  also a full moon recursion with an eclipse. The eclipse is reported by NASA at:
@@ -151,7 +151,7 @@
  β) Sun, April 24 22:10 UTC
     $ ./day --use 0012:04:24,22:10,115
      4132
- ω) Sat, May  6 05:41 UTC                 (ἐν τῇ ἡμέρᾳ τῶν σαββάτων)
+ ω) Sat, May  6 05:41 UTC                 (ἐν τῇ ἡμέρᾳ τῶν σαββάτων)[Luke 4.16]
     $ ./day --use 0030:05:06,05:41,126    (ἐκαθαρίσθη ο Σάρος)     10718
 
  Days 6585, Hours +7:31                   (manual subtraction)
