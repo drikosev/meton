@@ -9,8 +9,9 @@
 
  The table has been translated in English by Michael Deckers, who also 
  translated the calendrical content of that document into modern math
- notation. The compiled document can be found in various WEB Sites, ie: 
- http://hbar.phys.msu.su/gorm/chrono/paschata.htm
+ notation. The compiled document can be found in various WEB Sites, ie:
+ https://www.tertullian.org/fathers/dionysius_exiguus_easter_01.htm 
+ http://hbar.phys.msu.su/gorm/chrono/paschata.htm         [broken link]
 
  Also, an alternative translation of the Paschal Table can be found at:
  http://www.nabkal.de/osterstreit/anhang/dionysius_2.html
@@ -33,10 +34,6 @@
  Calendar. A 19 year period is either 6939 days if the fourth year is leap
  or 6940 days otherwise and in the long term the average value approaches 
  the number of 6939.75 days. A 3 days error in 2014 seems to be quite small.
-
- Note that a new moon or full moon may recur ie after 1468 (4*367) years on
- the same month date but if this number isn't divisible by 19, then the
- Metonic cycle error keeps accumulated.
 
  Also, the vernal (spring) equinox slips backward in the Julian calendar 
  and nowadays falls on March 7-8 (Gregorian Date: March 20-21) whereas the
