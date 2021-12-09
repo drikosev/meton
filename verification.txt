@@ -11,7 +11,7 @@
  translated the calendrical content of that document into modern math
  notation. The compiled document can be found in various WEB Sites, ie:
  https://www.tertullian.org/fathers/dionysius_exiguus_easter_01.htm 
- http://hbar.phys.msu.su/gorm/chrono/paschata.htm         [broken link]
+ http://hbar.phys.msu.su/gorm/chrono/paschata.htm         [broken link] 
 
  Also, an alternative translation of the Paschal Table can be found at:
  http://www.nabkal.de/osterstreit/anhang/dionysius_2.html
@@ -38,6 +38,10 @@
  Also, the vernal (spring) equinox slips backward in the Julian calendar 
  and nowadays falls on March 7-8 (Gregorian Date: March 20-21) whereas the
  algorithm computes the so called Paschal 14th after March 20.
+
+ Note that a new moon or full moon may recur ie after 1468 (4*367) years on
+ the same month date but if this number isn't divisible by 19, then the
+ Metonic cycle error keeps accumulated.
 
  Regarding the algorithms comparison, the dates calculated by the script 
  "easter", which implements the Gauss algorithm, agree with the dates 
