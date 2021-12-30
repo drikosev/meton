@@ -128,15 +128,6 @@
  find links to translations in file "verification.txt".
 
 
--Note that a new moon may recur after 46 years, ie the first new moon of spring 
- in 1454 (-14+1468) recurs on the same month date in year 1500 (32+1468) or the
- new moon of spring in 2922 (-14+1468*2) recurs in 2968 (32+1468*2), but I have
- not managed to identify two consecutive recursions in a row. Possibly, when it
- happens it's a one time recursion (not so useful for error analysis). [John 2.20]
-
- To verify these dates, I've used regional local time GMT+2 in Athens/Alexandria.
-
-
 -According to Wikipedia, the Saros is a period of approximately 223 synodic months
  (approximately 6585.3211 days, or 18 years, 11 days, 8 hours) which can be used to
  predict lunar & solar eclipses. See https://en.wikipedia.org/wiki/Saros_(astronomy)
@@ -186,6 +177,16 @@
 
  Greek readers may note that our counting isn't affected by the order of the words
  "υἱός" and "ὡς ἐνομίζετο" in Luke 3.23 [Catholic Encyclopedia & Codex Sinaiticus].
+
+-Note that a new moon may recur after 46 years, ie the first new moon of spring 
+ in 1454 (-14+1468) recurs on the same month date in year 1500 (32+1468) or the
+ new moon of spring in 2922 (-14+1468*2) recurs in 2968 (32+1468*2), but I have
+ not managed to identify two consecutive recursions in a row. Possibly, when it
+ happens it's a one time recursion.                                 [John 2.20]
+
+ To verify these dates, I've used regional local time GMT+2 in Athens/Alexandria.
+ And years later I saw that the end of Saros 49 is estimated on Mar 29, 32 AD.
+
 
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
