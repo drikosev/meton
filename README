@@ -198,6 +198,8 @@
  *The third column (day script) shows the number of days since 31/12/1 BC.
 
  Note: The Book of John mentions one more passover, in a subsequent year.
+ In year 34 AD ie, the first new moon in spring is estimated on Mar 09 with an
+ eclipse. Which in turn is part of saros series 69 that ends on Mar 22, 665 AD. 
 
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
