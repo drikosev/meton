@@ -185,7 +185,8 @@
  happens it's a one time recursion.                                 [John 2.20]
 
  To verify these dates, I've used regional local time GMT+2 in Athens/Alexandria.
- And years later I saw that the end of Saros 49 is estimated on Mar 29, 32 AD.
+ And years later I saw that the end of Saros 49 is estimated on Mar 29, 32 AD, a
+ solar eclipse not visible from Easter Mediterranean.
 
 -The first new moon of spring in year 33 AD is estimated on Mar 19,    [John  6.4]
  more than 200 years before the last eclipse of that Saros in 249 AD.  [John  6.7] 
@@ -193,13 +194,16 @@
  In the following sentences we read about the pieces (κλάσματα) left over. So,
  here are the remaining eclipses in that series, fitted in 12 baskets. [John 6.13]   
 
- Basket	Solar Eclipse.      	day*  	period-rounded		  0	0033-03-19,13:40,078	11766  1	0051-03-30,21:31,089	18351	6585  2	0069-04-10,05:13,100	24937	6586  3	0087-04-21,12:52,111	31522	6585  4	0105-05-01,20:24,121	38107	6585  5	0123-05-13,03:55,133	44693	6586  6	0141-05-23,11:22,143	51278	6585  7	0159-06-03,18:49,154	57863	6585  8	0177-06-14,02:15,165	64449	6586  9	0195-06-25,17:12,176	71034	6585 10	0213-07-05,17:12,186	77619	6585 11	0231-07-17,00:46,198	84205	6586 12	0249-07-27,08:24,208	90790	6585 
+ Basket	Solar Eclipse.      	day*  	period (rounded)		  0	0033-03-19,13:40,078	11766  1	0051-03-30,21:31,089	18351	6585  2	0069-04-10,05:13,100	24937	6586  3	0087-04-21,12:52,111	31522	6585  4	0105-05-01,20:24,121	38107	6585  5	0123-05-13,03:55,133	44693	6586  6	0141-05-23,11:22,143	51278	6585  7	0159-06-03,18:49,154	57863	6585  8	0177-06-14,02:15,165	64449	6586  9	0195-06-25,17:12,176	71034	6585 10	0213-07-05,17:12,186	77619	6585 11	0231-07-17,00:46,198	84205	6586 12	0249-07-27,08:24,208	90790	6585 
 
  *The third column (day script) shows the number of days since 31/12/1 BC.
 
  Note: The Book of John mentions one more passover, in a subsequent year.
- In year 34 AD ie, the first new moon in spring is estimated on Mar 09 with an
- eclipse. Which in turn is part of saros series 69 that ends on Mar 22, 665 AD. 
+       In year 34 AD ie, the first new moon in spring is estimated on Mar 09
+       with an eclipse, part of saros series 69 that ends on Mar 22, 665 AD. I
+       can't see in the great uncials ie an allegory that pinpoints this end.
+       One difference between the solar eclipses saros series 49, 59, and 69
+       is that the first two end before the 4th century, the last after.
 
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
@@ -264,8 +268,9 @@
   AD is without any doubt the so called incarnation year that the New Testament was
   written for.
 
+ -At third, we've dated the first two of the three passovers mentioned in the Book
+  of John, respectively in years 32 and 33. The Easter algorithm gives a premature
+  paschal full moon date (passover) in year 33 and a marginal value in year 32. 
 
-
-    
   -------------------------------------------------------------------------------------
  [The Meton project can be found also at the WayBack Machine, at http://web.archive.org]
