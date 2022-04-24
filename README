@@ -205,6 +205,11 @@
        One difference between the solar eclipses saros series 49, 59, and 69
        is that the first two end before the 4th century, the last after.
 
+-The solar eclipse on Tuesday, Mar 09, 34 AD is estimated by modern astronomers
+ as the most central one in Saros series 69, as it has the lowest absolute gamma,
+ with γ for the first time negative in that series. That is, the Moon's shadow  
+ axis had passed the Earth's centre (ἐκ τοῦ μέσου).    [Colossians 2: 14, 16, 17]
+
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
  the math I computed a one day deviation from the Julian Year every 128.04 years.
