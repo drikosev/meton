@@ -224,6 +224,36 @@
       translators and see also the Catholic Encyclopaedia that contains
       both English & Greek text. 
 
+ Note: This solar eclipse could possibly give a passover on Tuesday, Mar 23, 34 AD,
+       specifically from Monday evening, March 22 until the following evening. This
+       date is important for a computation as we will analyze the text of John below.
+
+       As we can see however in file "sol-limits.txt" and our first conclusion below
+       this project uses a range, rather a single value for the tropical year. Which
+       in turn limits the spring equinox in year 34 AD between March 22 and March 24.
+       So, we take into account the possibility of a passover on Wednesday, April 21.       
+
+       At the same time, the gospels report two varying accounts that many experts 
+       have tried to reconcile. We don't, as this project is purely astronomic. The
+       synoptic gospels report that the last supper took place on the first day of
+       the Unleavened Bread feast. Which complies with the reported Hebrew customs
+       that it's the first day of the Unleavened Bread Week following the passover.
+       At the  same time, it's inferred from the narration that it was a Thursday,
+       which fits well with a passover on Wed, April 21, 34 AD as shown above. Which
+       in turn means that the following Sunday is on Apr 25.
+
+       Whereas the book of John reports that the events took place before the passover.
+       Five days earlier people were gathering to Jerusalem for the feast [John 12.12]
+       and the supper took place before the passover as well [John 13.1]. Again, it's
+       inferred from the narration that it was a Thursday. The book of John agrees 
+       with the synoptic gospels on the weekdays until Sunday, without reporting a
+       timeline from the gathering of the people to Jerusalem until the supper. Thus,
+       March 18 is a candidate, which means that the following Sunday is on Mar 21. 
+
+       Finally, the original text doesn't associate the passover with a Saturday. So,
+       the year 34 is a candidate as the year of the last passover mentioned in New
+       Testament.  
+
 
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
