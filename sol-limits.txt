@@ -42,6 +42,8 @@ Notes
    winter solstice. Dec 15 corresponds to the term "after" of the 1st column,
    whereas Dec 14 corresponds to the term "since" of the the 1st column.
 
+   Note: this basis is the first Christmas in the Gregorian calendar. 
+
 3. The above limits, 6 and 7 metonic cycles, were chosen because the official
    value of the tropical year is claimed to be approximately 365.24219 days,
    yet the honoured person of my project is Meton. So, I've chosen integral
@@ -55,5 +57,5 @@ Notes
    three days, then one possible interpretation is that the W. Solstice falls
    three days earlier than the SOL day, in year -356 ie on Dec 28.
 
- 
+
 
