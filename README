@@ -1,359 +1,457 @@
 
--The bash script "easter" calculates the Greek Orthodox Easter Day (from 1924).
- Greece adopted the Gregorian calendar in 1923, one year earlier than the Greek
- Orthodox Church. See: https://en.wikipedia.org/wiki/Gregorian_calendar
 
--The bash script "julian" converts a given Gregorian Calendar date (from 1582) 
- to the corresponding date of the Julian Calendar. These two calendars diverge 
- 3 days every 400 years (on the average almost 1 day every 7 Metonic cycles).
+Port Center
+-----------
 
- If no date is specified, the script converts the current date returned by the
- bash shell command "date" with the following format:
+The port center (pc) is an OS directory that contains a few Bash Scripts and Make Files,
+which can help one install open source developer tools on a Mac; formerly OS X, now macOS.
 
- $ date +"%Y-%m-%d,%H:%M,%j"
- 2018-02-27,17:35,058
- $ ./julian
- 2018-02-14,17:35,045
+The Port Center automates also the installation of RPM, a package management system which
+however requires a long list of dependencies to be installed first. The PC script runs on
+OS X (10.9-10.11) and macOS (10.12-10.14). Yet, support for Mojave is work in progress.
 
- Here are a few typical examples:
-
- $ ./julian --use 2101-01-15,00:01,15
- 2101-01-01,00:01,001
- $ ./julian --use 1901-01-14,00:01,14
- 1901-01-01,00:01,001
- $ ./julian --use 1801-01-13,00:01,13
- 1801-01-01,00:01,001
- $ ./julian --use 1701-01-12,00:01,12
- 1701-01-01,00:01,001
- $ ./julian --use 1582-10-15,00:00,288
- 1582-10-05,00:00,278
+Also, one can run this script in a RHEL 7.4-7.6 compatible system to install two Linux
+Drivers, one for the Apple USB Super Drive (ausden) and another for the Broadcom IEEE
+802.11a/b/g/n WiFi card (bcm43xx) installed on older Mac Computers (ie a Mac Mini 2011).
+The WiFi Driver is kernel specific and has to be reinstalled after a kernel upgrade.
 
 
- Please note that there is a 2 days gap between the Julian and the Gregorian
- calendar. The "julian" script converts dates based on the assumption that the
- gap was introduced in the Gregorian calendar right from the start. Otherwise
- the results wouldn't correspond to the current dates of the Julian calendar.
- The term "gap" here is used with respect to the current base of the calendar.
+Installation Script
+-------------------
 
--The file "verification.txt" describes a comparison between the 6th century
- Paschal Table computed by Dionysius Exiguus and the dates computed by the
- bash script "easter" for a 114 years period (6 Metonic cycles) beginning in
- the 22nd century. The comparison is fully successful since Feb 25, 2018.
+To install a package, one has to run the "port" command to create an archive that will be
+processed by the system installer. This "port" command cannot uninstall packages and
+shouldn't be on path.
 
-   
--The bash script "day" accepts a date-time of the Julian Calendar and computes
- how many days have passed from Dec 31, 1 BC.
+The installation process is logically divided in three phases. At first, one can run the
+command "./port details <package>" to examine in advance the installation details of a
+package, without download it; this command will print the relevant url's, configuration
+options, and installation paths for that package.
 
- Two points make a line. The reader should already know basic math like that in
- order to understand the contents of this page and properly use i.e. the scripts
- "julian" and "day". The most qualified may benefit even more from math skills.
+After, one can archive a package with a single command or on a step-by-step basis.
+Specifically, one can download, extract, patch, configure, make, place, pack, and archive
+a package. These steps are also options of the port command. Running the "port" command
+with the option "place" will install files to a temporary directory located at
+"/tmp/<package>.dst"; which is the destination root that will be packed and archived.
 
- According to Plato's "Republic", Socrates believed that skills in geometry, 
- astronomy, and especially mathematics (522c10-526c5) are crucial in the 
- education of philosophers as math can haul a philosopher to the light (521c). 
+Finally, one can invoke the system installer to process the archive; possibly, by double
+clicking it. If you build and install a package on the same machine you can simply run:
+"./port install <package>". 
 
- Since then some time has passed but personally I accept Socrates' opinion
- without any further proof.
-
-
- Known Issues      
- --------------
- [Apr 12, 2018]
-
--Admittedly, I'm not an astronomer. If you find any errors in this project, an 
- e-mail will be highly appreciated.
-
--Regarding the Metonic cycle error, it seems to be on the average almost 1 day
- every 304 Julian years, known as the Hipparchic cycle. Wikipedia mentions that
- the 1 day correction proposed by Hipparchus deviates only by 0.014 days. 
-
- Having spent some time doing the math and then collecting data from two online
- servers (moongiant.com & timeanddate.com), I could identify a stable recurring 
- cycle where the 1 day error applies firmly to the Julian Calendar for the March 
- full moons. The years sequencing of this recursion is defined by the function: 
-
- y(e) = 16 * 19 * e + a, for e=0..15 and a=1  (likely also a=0, a=5, a=17, ...)
-
- If you start counting from March 28, 1 AD then every 304 years you find a full 
- moon one day earlier, finally in year 4561 on March 13 (note that the monthly
- calendar in timeanddate.com accepts dates lower than 4000 AD). To verify these
- dates, I've taken into account regional local time GMT+2 in Athens/Alexandria.
+Once the RPM has been installed, one can use in the port script the command line arguments
+"rpmbuild" and "rpminstall" instead of "archive" and "install" respectively for any open
+source package. To see more type: "~/pc/port --help"
 
 
--Regarding the error of a 32 years cycle, it's likely between 6.1 and 6.9 days,  
- which means that a 33 lunar years period is just a week longer than this cycle.
+Download & Setup
+----------------
 
- Every 14 cycles the accumulated error is nearly 3 lunar months, in which case 
- we find a full moon about 3 days earlier. I have identified a stable recurring
- cycle where this 3 days error applies firmly to the Julian Calendar. The years
- sequencing of this recursion is defined by the function:
+Once the tarball has been downloaded (ie at ~/Downloads/pc-rules-2021-02-14.tar.bz2), the
+following four commands will setup the port center:
 
- x(e) = 14 * 32 * (e/3) + c, for e=3*i, i=0..10 and c=33
+install -d ~/pc 
+cd ~/pc 
+tar -xjSf ~/Downloads/pc-rules-2021-02-14.tar.bz2 
+ln -sf rules/port port
 
- If you start counting from April 3, 33 AD then every 448 years you find a full 
- moon 3 days earlier, finally in year 4513 on March 4. To verify these dates, I
- have taken into account again regional local time GMT+2 in Athens/Alexandria.
- 
- In addition to the Hipparchic cycle, this recursion confirms also precisely the
- full moon on March 22, 1825 (April 3, 1825 after the Gregorian calendar reform).
+*SHA1 pc-rules-2019-11-13.tar.bz2: 7d05037304677ccf65e6a58b794416f088800881
+*SHA1 pc-rules-2019-12-06.tar.bz2: 29f65de5e10cf0dbb8152a8f9812482d3d2b5199
+*SHA1 pc-rules-2020-04-04.tar.bz2: 7bf09f61eb34834e7d8d9b826961eb9b03dea798
+*SHA1 pc-rules-2020-05-11.tar.bz2: 63e81b8e393276dcf569ec0ff35a7dfb87f018e3
+*SHA1 pc-rules-2020-05-17.tar.bz2: 9a6970b52c767fec19242324c3f5a825592dfa5a
+*SHA1 pc-rules-2020-05-26.tar.bz2: d7c5657937617ef8e02fab667ed84ee02615b6a8
+*SHA1 pc-rules-2020-06-10.tar.bz2: cddf3c3b85bc0c72e4b1d6ffa2d54bf861011862
+*SHA1 pc-rules-2020-10-14.tar.bz2: 9b3db6f6c420b0d857e8d8a72114055ab19b7f6f
+*SHA1 pc-rules-2020-12-06.tar.bz2: 47f1a22e7727349dc821b2198cec9cfa2185d4c6
+*SHA1 pc-rules-2020-12-25.tar.bz2: ee2f1c95d857ca9dd02a615c2890c5460b24e5c7
+*SHA1 pc-rules-2021-01-17.tar.bz2: 913126eff0226e8c21ba7bf8f8dbd73143842efc
+*SHA1 pc-rules-2021-02-14.tar.bz2: 695b970549745f774f9330f61b4b0fca2b93eb1f
 
+To see ie the build instructions for gcc-4.8.5, type:
 
--City names like Athens ie aren't unique. The cities mentioned or
- related to this page are in the Eastern Mediterranean, ie:
-                                           Latitude / Longitude  
- 1. Athens:                              37.9838° N,  23.7275° E
- 2. Constantinople (*nowadays Istanbul): 41.0082° N,  28.9784° E
- 3. Alexandria:                          31.184245° / 29.875605°
- 4. Jerusalem:                           31.7683° N,  35.2137° E
+./port details gcc4
 
-
--A Paschal 14th may recur after 95 years on the same month date and weekday, but
- not always. At first, if we compare the year 316 to 411 ie we see that in 316 
- the Paschal 14th falls on Saturday March 24, whereas in 411 on Friday March 24.
-
- At second, if we apply the Metonic cycle error to year 411, we see that only the
- years 126, 221, 316, 506, 601, and 696 in this series could possibly had also a 
- new moon in spring on the same month date. This estimation is further restricted
- by modern astronomic applications between the years 316 and 601. That is, modern
- applications report that in 316, 411, 506, and 601 a new moon occurred on 10/3.
- 
- So, a new moon may recur on the same weekday and month day after 95 years as ie 
- on Friday, March 10 in 411, 506, and 601 but such a recursion isn't guaranteed.
-
--Unless I run the Easter algorithm and read the results in year 31, I cannot find  
- a Jewish Passover on a Saturday, March 24 between the years 26 and 37.
-
- One can either use the formulas presented in the translation of the Easter Table
- or simply read in the Easter Table the results of the year 563 (31+532). You can
- find links to translations in file "verification.txt".
+Likely, this is the first package to be installed on MacOS (10.14) and a night build is
+recommended. The file "selective-gcc-tests.txt" explains some build options about this
+package. On macOS Mojave (10.14) the SDK Headers are required, see the known issues below.
 
 
--According to Wikipedia, the Saros is a period of approximately 223 synodic months
- (approximately 6585.3211 days, or 18 years, 11 days, 8 hours) which can be used to
- predict lunar & solar eclipses. See https://en.wikipedia.org/wiki/Saros_(astronomy)
 
- Using the "day" script, I could confirm a full moon recursion (without an Eclipse):
+RPM (4.11.3)
+------------
 
- α) Sat, March 26 14:38 UTC	          [Luke 2.42]    $ ./day --use 0012:03:26,14:38,086	     4103	 ψ) Thu, April  6 22:24 UTC	    $ ./day --use 0030:04:06,22:24,096	     10688	 Days 6585, Hours +7:46                   (manual subtraction)
+[2017-11-13]
+The RPM Package Manager (RPM) is a command line driven package management system used in
+various Linux distributions, such as Red Hat Enterprise Linux, and SUSE Linux Enterprise.
+According to wikipedia, it has also been ported to other systems such as IBM's AIX .
 
- The above dates have been found in "moongiant.com". Similarly, I could confirm 
- also a full moon recursion with an eclipse. The eclipse is reported by NASA at:
- https://eclipse.gsfc.nasa.gov/LEcat5/LE0001-0100.html
+This package builds the fork distributed by rpm.org and now uses gnupg-2.0. This porting
+is still work in progress and hasn't passed yet adequate quality tests. In example, we
+haven't tested at all the RPM Plug-In functionality. If you face any problems with the
+Berkeley DataBase, configure it with the minimum options possible.
 
- β) Sun, April 24 22:10 UTC
-    $ ./day --use 0012:04:24,22:10,115
-     4132
- ω) Sat, May  6 05:41 UTC                 (ἐν τῇ ἡμέρᾳ τῶν σαββάτων)[Luke 4.16]
-    $ ./day --use 0030:05:06,05:41,126    (ἐκαθαρίσθη ο Σάρος)     10718
+To install this package and initialise the RPM DataBase, run:
 
- Days 6585, Hours +7:31                   (manual subtraction)
+./port install rpm
+
+If the above command fail, follow a step by step approach as you may have to do with any
+other package that fails, ie "autogen" on Mojave. Post a clean/cleaner command, configure
+again, and then install:
+
+./port clean rpm
+./port -v configure rpm
+./port install rpm
+
+If everything works as supposed to, a "postinstall" script will also initialize the RPM
+DataBase and populate it with all the packages installed by the Port Center along with any
+other JRE and JDK installed in your system. If not restricted by the SandBox it will
+attempt to process XQuartz also, if installed. These packages will go under the full
+control of RPM, you can uninstall them.
+
+The "postinstall" script will also run the "vpkg-provides.sh" script that creates a
+virtual package for all the libraries installed at /usr/lib. Further, all Frameworks in
+System Library are added as capabilities that the system provides.
+
+If everything has indeed worked as supposed to, you should be able to install easily at
+least a small RPM package, ie gnu sed.
+
+Below there are step by step instructions to help you download this small RPM package
+(sed-4.2.2-5) from public-yum.oracle.com and install it on an Mac OS Mojave (10.14).
+
+
+Download a source RPM Package
+-----------------------------
+
+cd ~/Downloads
+curl -O https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/getPackageSource/sed-4.2.2-5.el7.src.rpm
+rpm -i sed-4.2.2-5.el7.src.rpm 
  
 
- Please note that a period of 6585.3 days might correspond to 18 years and 10.3 
- days as in the two examples above or to 18 years and 11.3 days if we measured 
- ie the period between the full moons on 29/3 9 AD and 9/4 27 AD.
+The above command is not supposed to complain at all about signature problems, but you
+will likely see and it is safe to ignore the following two recurring warnings.
 
- To my understanding, a safe conclusion is that a Saros can be used to predict
- not only a lunar eclipse but also a full moon without an eclipse as well. At 
- the same time we've crosschecked a few more results printed by "moongiant.com"
- for a period in the long past.
-
- The Ω Eclipse above is reported by NASA as the last one of Saros 41:
- https://eclipse.gsfc.nasa.gov/LEsaros/LEsaros041.html 
-
-
- Note: The reader should notice that all computations above are based on full
-       moon events, not new moon plus fourteen days. In year 12 ie, we've a new
-       moon on March 11, 13:27 UTC, fifteen days earlier from the 'α' full moon,
-       which doesn't coincide with a passover, as also happens ie on Friday 
-       Apr 3, 33 at 17:32 UTC and once it's an eclipse, you can still find it at: 
-       https://eclipse.gsfc.nasa.gov/LEcat5/LE0001-0100.html  
-
--As it seems the algorithms that compute the moon phases are highly accurate 
- because I'd found the 'α' and 'ω' full moons above in New Testament by decoding
- the Book of Luke and thereafter confirmed the second date with modern astronomic
- applications. Precision is further confirmed by the fact that the second full
- moon is estimated now as an eclipse, the last one of a particular Saros. 
-
- Greek readers may note that our counting isn't affected by the order of the words
- "υἱός" and "ὡς ἐνομίζετο" in Luke 3.23 [Catholic Encyclopedia & Codex Sinaiticus].
-
--Note that a new moon may recur after 46 years, ie the first new moon of spring 
- in 1454 (-14+1468) recurs on the same month date in year 1500 (32+1468) or the
- new moon of spring in 2922 (-14+1468*2) recurs in 2968 (32+1468*2), but I have
- not managed to identify two consecutive recursions in a row. Possibly, when it
- happens it's a one time recursion.                                 [John 2.20]
-
- To verify these dates, I've used regional local time GMT+2 in Athens/Alexandria.
- And years later I saw that the end of Saros 49 is estimated on Mar 29, 32 AD, a
- solar eclipse not visible from Eastern Mediterranean.
-
--The first new moon of spring in year 33 AD is estimated on Mar 19,    [John  6.4]
- more than 200 years before the last eclipse of that Saros in 249 AD.  [John  6.7] 
-
- In the following sentences we read about the pieces (κλάσματα) left over. So,
- here are the remaining eclipses in that series, fitted in 12 baskets. [John 6.13]   
-
- Basket	Solar Eclipse.      	day*  	period (rounded)		  0	0033-03-19,13:40,078	11766  1	0051-03-30,21:31,089	18351	6585  2	0069-04-10,05:13,100	24937	6586  3	0087-04-21,12:52,111	31522	6585  4	0105-05-01,20:24,121	38107	6585  5	0123-05-13,03:55,133	44693	6586  6	0141-05-23,11:22,143	51278	6585  7	0159-06-03,18:49,154	57863	6585  8	0177-06-14,02:15,165	64449	6586  9	0195-06-25,17:12,176	71034	6585 10	0213-07-05,17:12,186	77619	6585 11	0231-07-17,00:46,198	84205	6586 12	0249-07-27,08:24,208	90790	6585 
-
- *The third column (day script) shows the number of days since 31/12/1 BC.
-
- Note: The Book of John mentions one more passover, in a subsequent year.
-       In year 34 AD ie, the first new moon in spring is estimated on Mar 09
-       with an eclipse, part of saros series 69 that ends on Mar 22, 665 AD. I
-       can't see in the great uncials ie an allegory that pinpoints this end.
-       One difference between the solar eclipses saros series 49, 59, and 69
-       is that the first two end before the 4th century, the last after.
-
--The solar eclipse on Tuesday, Mar 09, 34 AD is estimated by modern astronomers
- as the most central one in Saros series 69, as it has the lowest absolute gamma,
- with γ for the first time negative in that series. That is, the Moon's shadow  
- axis had passed the Earth's centre (ἐκ τοῦ μέσου).    [Colossians 2: 14, 16, 17]
-
- Note: the three identified key phrases are these: 
-      2.14) ἦρ(κ)εν ἐκ τοῦ μέσου προσηλώσας αὐτὸ τῷ σταυρῷ
-        (a) The world "ἦρ(κ)εν" is a third person, transitive verb in
-            past tense that may ie also mean "lift a load" (with hands).
-            See ie in Mark 2.11 the imperative form ἆρον. 
-        (b) The word "μέσου" is a noun that may also mean "medium" or
-            "middle", and so on.
-      2.16) νεομηνίας = new moon (singular noun, possessive form).
-      2.17) σκιὰ = shadow (singular noun).		
-
-      Of course I'm not an expert in translation. Try ie some online
-      translators and see also the Catholic Encyclopaedia that contains
-      both English & Greek text. 
-
- Note: This solar eclipse could possibly give a passover on Tuesday, Mar 23, 34 AD,
-       specifically from Monday evening, March 22 until the following evening. This
-       date is important for a computation as we will analyze the text of John below.
-
-       As we can see however in file "sol-limits.txt" and our first conclusion below
-       this project uses a range, rather a single value for the tropical year. Which
-       in turn limits the spring equinox in year 34 AD between March 22 and March 24.
-       So, we take into account the possibility of a passover on Wednesday, April 21.       
-
-       At the same time, the gospels contain two varying accounts that many experts 
-       have tried to reconcile. We don't, as this project is purely astronomic. The
-       synoptic gospels report that the last supper took place on the first day of
-       the Unleavened Bread feast. Which complies with the reported Hebrew customs
-       that it's the first day of the Unleavened Bread Week following the passover.
-       At the  same time, it's inferred from the narration that it was a Thursday,
-       which fits well with a passover on Wed, April 21, 34 AD as said above. Which
-       in turn means that the following Sunday is on Apr 25.
-
-       Whereas the book of John reports that the events took place before the passover.
-       Five days earlier people were gathering to Jerusalem for the feast [John 12.12]
-       and the supper took place before the passover as well [John 13.1]. Again, it's
-       inferred from the narration that it was a Thursday. The book of John agrees 
-       with the synoptic gospels on the weekdays until Sunday, without reporting a
-       timeline from the gathering of the people to Jerusalem until the supper. The
-       narration complies with a passover from Saturday to Tuesday. So, a supper on
-       March 18 is feasible, which means that the following Sunday is on Mar 21. 
-
-       Finally, the original text doesn't associate the passover with a Saturday. So,
-       the year 34 is a candidate as the year of the last passover mentioned in New
-       Testament.  
-
-
--Regarding the length of the tropical year, the mean value 365.24219 printed
- by the program "tropical-year.f90" has been found in Wikipedia and after making
- the math I computed a one day deviation from the Julian Year every 128.04 years.
-
- The file "sol-limits.txt" contains values of the tropical year that correspond
- to one day deviation from the Julian Year precisely every 6 & 7 Metonic cycles.
-
- If we read some W. Solstice estimations for leap years in Beirut, the closest
- capital to the ancient city Ἡλιούπολις (Greek for "Sun City"), with Latitude
- 33.8938° N, then we see that in 2088 a W. Solstice is estimated for the first
- time on Dec 20 (Dec 7 in the Julian Calendar). Whereas, the first solstice before
- the sunrise of Dec 21 (Dec 8 in the Julian cal.) is estimated for the year 2052:
- https://www.timeanddate.com/calendar/seasons.html?year=2050&n=34
-
- Note here that the first W. Solstice on Dec 21 is estimated for the year 1952:
- https://www.timeanddate.com/calendar/seasons.html?year=1950&n=34
-
- Whereas, the first solstice before the sunrise of Dec 9 (Julian) is estimated for
- the year 1916: https://www.timeanddate.com/calendar/seasons.html?year=1900&n=34
-
- In both cases the "slipping" period in these estimations seems to be 136 years, a
- value close enough to the one used in the Gregorian calendar. Further, I have not 
- cross checked these estimations with another site or application. Yet, we have an
- approximative time frame for the W. solstice movements on the calendar in our era.
-
- Apart the etymology of the city name, Ἡλιούπολις is an arbitrarily chosen geographic
- position, at 1170 m (3840 ft). Whatsoever, the local time zone in that region seems
- to be GMT+3.
+warning: user mockbuild does not exist - using root 
+warning: group mockbuild does not exist - using root 
  
- Also, a W. solstice before the sunrise of Dec 21 is estimated for the year 2048 in
- Athens. Note that Greece has a dual time zone (+2 from Autumn and +3 from Spring)
- but likely this doesn't affect my conclusion that is based on the above estimations. 
- [Note that in 2044 the W. solstice is estimated just four minutes after the sunrise]
 
--Whereas a spring equinox on March 19 (Julian 6) in Athens is estimated for the first
- time for the year 2052, which seems to be also a quite good approximation. With 
- the official value of the tropical year (365.24219) I compute an Equinox on March
- 21 between the years 132 AD and 260 AD. Not sure if I am doing a mistake here but 
- with the lowest value (365.241228) found in file 'sol-limits.txt', I compute an 
- Equinox on March 21 between the years 342 and 456 AD (may be forwarded by a decade).
-
--The lunar-solar syncrhonization with weeks at the beginning of a leap year found
- on Sunday, January the 1st of the astronomical year -356 is too rare in the Julian  
- calendar, without even taking into account the possibility of a SOL event this day
- that would make the combination unique for million years (if not unique forever).
-
- It's a bit surprising that the Alexandrian astronomers who created the calendar had
- not noticed that and we can't find any direct reference in the historic sources
- maintained by the Romans in late antiquity and thereafter in the middle ages. Of
- course, I am not a history specialist to assure you about that.
-
- As we can see in file 'verification-of-the-day-script.txt' it turns out that this
- date possibly has an additional syncrhonization in some regions, where the new moon
- is estimated very close to the sunset, ie 28 minutes in Ἡλιούπολις. Without actual
- astronomic recordings or findings ie of some monument that represents this join 
- of the Sun and the Moon, I can't make any further conclusions that are safe. The
- point is that my study could accept archeological evidence, but not historic claims,
- as reported of course by qualified archeologists. We just make data analysis here.
-
- Yet, a past claim from a chief archeologist that made excavations in Baalbeck that
- the large destroyed temple is a temple of the sun doesn't help us too much if we
- cannot associate it with some astronomic event or a specific date.
-
- As we can also see in file 'sol-limits.txt' this date appears on the left column
- if we start counting backwards from the first Christmas in the Gregorian calendar.
-
- These coincidences can't be ignored in a decent astronomic analysis project without 
- further examination. Otherwise, we should just write ie that Julius Africanus dated
- the last passover on Sat, March 24, 31 AD (Olympiad 202.2) and say everything 
- matches because it's further confirmed by the modern greek translation of the New
- Testament where we read that the last passover was on Saturday [Κατά Ιωάννην 19.31]
- which is finally what the Easter algorithm reports.   
+In case you see a warning about the signature, run:
+sudo rpm --import /usr/local/etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-ol7
 
 
+Porting a source RPM package to Mac OS Mojave (10.14)
+-----------------------------------------------------
+cd $HOME/rpmbuild 
+sed -i.sav "s/, [ ]*libselinux-devel//g" SPECS/sed.spec 
+sed -i.sav "s,/sbin/install-info,/usr/local/bin/install-info,g" SPECS/sed.spec 
+sed -i.sav "s/configure[ ]*--without-included-regex/configure --disable-nls \
+    --disable-i18n --with-included-regex/g" SPECS/sed.spec 
+sed -i.sav "s/sed.info.gz/sed.info/g" SPECS/sed.spec
+sed -i.sav "s/%find_lang/#%find_lang/g" SPECS/sed.spec
+sed -i.sav "s/\-f[ ]*%{name}.lang//g" SPECS/sed.spec  
+rm -f SPECS/sed.spec.sav
 
-  CONCLUSIONS
 
- -First, I don't make a full error analysis of the Easter script because I can't
-  count on the current official value of the tropical year. In other words, I can't
-  compute with high accuracy how fast the Orthodox Easter slips into the summer.
+Build & Install an RPM Package
+------------------------------
+cd $HOME/rpmbuild 
+rpmbuild -ba SPECS/sed.spec --target x86_64 
+sudo rpm --force --nodeps -i RPMS/X86_64/sed-4.2.2-5.x86_64.rpm
 
- -Second, the new base year of the calendar announced by Dionysius Exiguus in 525 
-  AD is without any doubt the so called incarnation year that the New Testament was
-  written for.
 
- -Third, we've dated the first two of the three passovers mentioned in the Book
-  of John, respectively in years 32 and 33. The Easter algorithm gives a premature
-  paschal full moon date (passover) in year 33 and a marginal value in year 32. 
+Uninstall an RPM Package
+------------------------
+Thereafter, one should be able to uninstall this package, which hasn't any active
+dependents, with the following command:
 
- -Fourth, in year 34 the Easter script estimates a premature paschal full moon. I've
-  no reasons to make further error analysis for the subsequent years 35 and 36. The 
-  book of John focuses astronomically on the solar eclipses near the spring equinox
-  between 32 & 34 AD. Whereas, the last passover as narrated in the Synoptic gospels
-  fitted well when I examined the possibility of a late passover in April that year.
-  Which in turn would be feasible, according to my own rough computations, if the
-  tropical year ie deviated from the Julian calendar approximately one day every 114
-  to 124 years.
+sudo rpm --erase sed-4.2.2-5
+
+Since various RPM Scripts depend on gnu sed, you should better reinstall it. If "autogen"
+is also installed one can make a complete check on gcc (make check), because the GCC
+sub-package "fixincludes" depends on both of them. 
+
+
+Epilogue
+--------
+Obviously, one can copy paste and execute the above commands in a Mac, as long as Oracle
+Linux version 7.6 uses this version of sed. Without any doubt, the RPM installation still
+needs fine tuning (no mock, rpmlint, and so on) and probably this package isn't
+representative of the effort needed to port a package to OS X. Many RPM Source Packages
+require actual patch files to build on a Mac. Once "gnu sed" is installed, one should be
+able to install without any modifications "byacc", a prerequisite of "gnu awk", which in
+turn requires some path adjustments, ie /sbin and /usr/bin to /usr/local/bin.
+
+
+Known Issues
+------------
+[2019-11-26]
+
+- The installation script should run immediately after you clean install macOS Mojave
+  along with the Command Line Tools and optionally Xcode. Any other packages on path, ie
+  at "/opt/local", might have undesirable side effects; a similar restriction applies to
+  Linux as well. This is the only scenario I've successfully tested so far. On Mojave run:
+
+  open /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg 
+
+- If you rebuild & install an RPM package, check that the following two lines show up:
+  "packing     ... <pkg>.rpm" 
+  "installing  ... <pkg>.rpm"
+  If you don't see both lines, then an older RPM is installed (requires manual deletion). 
+
+- To install gcc48 or gcc4 on Linux, you have to manually install its dependencies. The
+  required dependencies in a RHEL 7.6 system can be satisfied by the official distribution
+  packages. So, the PC won't attempt to install ie gettext or pkg-config.
+
+  Although the PlugIn facilitates debugging for Fortran programs with LLDB, one should
+  expect that it has bugs. Yet, it can overcome few problems, mainly on a Mac, like ie the
+  test failure of pr49866.c (PLTOFF isn't acceptable by mac linkers). On Linux, the PlugIn
+  can compile and run ie the Fortran programs found in PRs 82065 and 87659. On May 3, 2020 
+  however I couldn't use the PlugIn to build the (static) LAPACK library. 
+  
+  There are some failures with the "guality" tests on Linux (gcc.dg/quality/) whereas on a
+  Mac the PCH tests have been adjusted to run without warnings & core dumps. One of
+  the warnings ie didn't comply with a system security policy that loads processes at 
+  randomly chosen memory addresses; I could avoid it only in the Xcode environment.
+
+  The PCH test "largefile.c" might fail in the gcc48 tests on OS X Yosemite (10.10). An 
+  extra patch for the PR/14940 has repeatedly bypassed those random failures several times
+  success isn't guaranteed though. One can apply manually the patch "gcc48-pr14940.newer"
+  to reverse the two related patches (but use then an 1 GB array for the PCH area).
+
+  On Mojave, five tests have been adjusted to run with the option "-fprofile-generate",
+  instead of the unsupported option "-pg". Further, during the build you can safely ignore 
+  any popup that may show up to inform you that the architecture i386 is deprecated.
+
+  The package gcc4 cannot fully recompile all the java classes of gcj and thus this option
+  has been deactivated; haven't figured out why, perhaps when java version > 1.7 ?
+
+  One test failure in "libjava" is Darwin specific (ie from 10.9 to 10.14); see PR/48097.
+  In this case, one can still create java classes (byte-codes) that run as supposed to.
+
+
+  Since 2017-11-20, gcc-4.8.5 has experimental support for Fortran SubModules. An 
+  internal issue is that the submodule separator '@' has been replaced by '$' as three
+  test cases (7, 8, and 29) were failing due to assembly errors in both Linux and with the
+  PlugIn.  
+
+  Since 2020-04-29, gcc-4.8.5 has experimental support for Allocation of Arrays without
+  space specification.
+
+  Note: SubModules, Deferred Length Characters, Finalization, and Allocation of Arrays
+  without space specification aren't officially implemented in GNU Fortran version "4.8"
+  and there are various newer PRs filed in GCC Bugzilla around these features. More
+  detailed information about the supported features per version can be found at
+  https://gcc.gnu.org/wiki/Fortran2003Status 
+
+  Note: You can bypass/trick several finalization seg. faults with the optimization option 
+  -O2 or -O3, ie the ones in PRs 69298, 70863, 82996, and 96122 (2020-12-18). 
+
+- A long standing problem of GNU GCC in macOS had been that the destructors of local
+  thread objects were running on deallocated memory (Emulated TLS). To my understanding,
+  this issue has been solved for the newer Darwin systems with the solution applied to 
+  PR/78968. I've back-ported this patch to version 4.8 (another patch is applied for the
+  PR/58142 if OS X < 10.9).
+
+- The PR/78534 changes the type of character length fields from int (4 bytes) to size_t.
+  The latter can be either 4 bytes on 32bit systems or 8 bytes in 64bit systems. Which can
+  possibly affect Fortran/C interoperability projects that don't use BIND(C) attributes. 
+
+  This patch has been backported in a manner that let's you optionally change the type. By
+  default the older GNU Fortran API is preserved (LONG_CHARLEN=0). To change this value in
+  an already configured compiler apply the patch "gcc48-pr78534.longer". To configure a
+  a fresh compiler with size_t, simply run: "./port configure gcc4  LONG_CHARLEN=1".
     
+  Note that this back-port can change the API but not the actual limit of a string length.
 
-  -------------------------------------------------------------------------------------
- [The Meton project can be found also at the WayBack Machine, at http://web.archive.org]
+- It turns out that class arrays in gfortran are broken as mentioned in PR/92065 due to 
+  PR/60322, which I unfortunately ported to gcc-4.8 in November 2019. See comment 18: 
+  https://gcc.gnu.org/bugzilla/show_bug.cgi?id=92065#c18 
+
+  To remedy the situation I've applied a hack on the 2020-12-25 tarball and thereafter 
+  that is nothing more than an interim solution, as outlined in PR/92065, comment 23. 
+  That explained, I don't see regressions, and once aware I couldn't tolerate such a 
+  bug until we've the perfect solution committed to GNU GCC Bugzilla. 
+
+  Latest tarball before PR/60322 may be the pc-rules-2019-11-13.tar.bz2, commit details:
+  https://github.com/drikosev/pc/commit/e02c47f1918f33bde18ddee57bd907b815df97ea 
+
+  Note: This hack is applied also to 7.4 - 7.5 and 8.2 - 8.4 (8.3 is untested though).
+
+- It turns out that the function Random Init (2018) isn't standard confirming. See ie:
+  https://groups.google.com/g/comp.lang.fortran/c/Z0TKn4q6UgQ
+
+- My own patch for PR/64290 has been applied without passing strict testing. Specifically,
+  modern Fortran has introduced a likely unique concept of ALLOCATABLE entities. At least 
+  I'm not aware of such functionality in languages like C/C++, Java, and ABAP. The promise 
+  is similar to that of the garbage collector in Java. The runtime automatically frees the 
+  dynamically allocated memory in such entities (maybe oversimplified).
+ 
+  One known issue with such allocatable entities is that any pointers to them may become 
+  undefined when the runtime makes a reallocation on assignment. To my surprise also, a 
+  constructor may be finalized, as ie a function result may have to be finalized. Further,
+  the standard doesn't explain in much detail the behaviour of such entities. 
+ 
+  This patch however affects only class re-allocations on intrinsic assignments, if either 
+  the LHS or the RHS is polymorphic and none of them is an array, which is implemented in
+ 'trans_class_assignment' and I've received very limited feedback for just two test cases:
+  https://gist.github.com/drikosev/a9e9e8357dbc45aeb02773198069222b
+
+  The implementation of finalizers in gfortran remains partial (2021-01-17).
+
+- The patch for PR/44504 is a personal effort for a nice to have feature in gfortran that
+  sets the optional STAT argument in Fortran DEALLOCATE statements for undefined pointers.
+
+  So far, I've not received though any feedback at all for a multithreading related issue: 
+  - https://groups.google.com/g/comp.lang.fortran/c/ntoCosjDwb0
+  - stackoverflow.com/questions/65973285/after-a-call-to-setjmp-can-pthread-t-be-different
+
+  As a result, this workaround is restricted to run as long as no race conditions are
+  detected due to multithreading, ie by OpenMP statements. This work may be abandoned as a
+  somewhat risky patch, which however is also ie an interim solution for PR/93691 as well,
+  or for PRs 98433, 97123, and 52774. The relevant error message is fully suppressed with
+  the option 'MallocDebugReport=none' in Mojave and 'MALLOC_CHECK_=2' in CentOS-7.6, ie:
+           $ gfc -g pr97123-00.f90 && MallocDebugReport=none ./a.out   
+           $
+
+  Note: the example in PR/93691 behaves differently in macOS and Linux and the DEALLOCATE
+        statement needs the STAT argument, or I pass the wrong value to 'MALLOC_CHECK_'.
+
+  To avoid this patch, one may choose the previous tarball (2020-12-25 tarball).
+
+
+- The bug fix for PR/88735 is also a personal, unofficial effort that is partial. Although
+  the symptom is the finalization of the RHS and I can't reproduce the bug without a final
+  routine, the real problem seemed to be that gfortran makes a normal assignment even for
+  fields with a defined assignment operator. So, this bug fix copies recursively all the
+  fields of a structure from RHS to LHS except those having a defined assignment operator.
+
+  The common denominator (κοινός παρονομαστής) with the PR/64290 seems to be some design
+  error in the assignment implementation for derived type variables that may cause a real
+  headache to GNU Fortran maintainers, unless they skip it. That explained, my bug fix is
+  obviously partial and perhaps solves a problem the wrong way, but I saw just few issues.
+
+  Note: When I test the patch without a finalizer or assignment operator as prerequisites,
+        no warning is issued in 'pr25923.f90'. Also, this patch doesn't accept a function
+        as the RHS, as it would run smoothly only in few cases, ie the 'proc_ptr_48.f90'.
+        Not sure why this happens but it's one reason that this patch is partial. Another
+        reason is that it fully copies arrays of derived type objects as the assignment 
+        defined operator is ignored. Which is also ignored if the variables A and B in the   
+        first program of PR/88735 were declared as classes (also not sure if this is ok).
+
+  Note: A test case with deep nested structures containing arrays of structures is a must.
+
+- Too many test cases of Valgrind (3.13) fail on a mac 10.12, ie 73 of the 215 "memcheck"
+  tests fail. Whereas the ratio of the failures is worse when one runs all the tests:
+  https://bugs.kde.org/show_bug.cgi?id=365327#c23
+
+  The PC script can install Valgrind-3.15 on OS X 10.11 and macOS 10.12-10.14. Support on
+  Mojave though is experimental and the installed program needs additional fine tuning.
+
+
+- If bash is asked to run a non existing command, you may face an unimportant Segmentation
+  Fault. This problem which appeared in Sierra remains even with the newer patches applied
+  on 2017-10-02. Perhaps, some Linux specific patches should be skipped on Darwin. I have 
+  not seen this error thereafter in High Sierra (10.13.4).
+
+  To set this bash shell as the user default, one has to manually run this command: 
+  sudo dscl . create /Users/${LOGNAME} UserShell /usr/local/bin/bash
+
+- The GNU tar-1.26 command (tar) might complain for unknown "header keywords" if the pc
+  "tarball" has been compressed by the BSD tar command (bsdtar). I ignore these messages.
+
+  As an interim solution, the PC script can install GNU tar-1.29 on macOS (10.11-10.14).
+
+- The installation script seems to be ready for macOS Mojave (10.14) but it has not
+  been tested very well. On 2019-11-30 I've installed gcc (4.8.5 & 7.5), RPM and autogen.
+  
+  Below are mentioned two failures I'd faced on 10.13.4. The first of these two failures
+  is likely related to the file "include-fixed/stdio.h", which is also found in gcc 7.5:
+  
+  - /usr/local/lib/gcc/x86_64-apple-darwin18/4.8.5/include-fixed/stdio.h
+  - /opt/local/lib/gcc/x86_64-apple-darwin18/7.5.0/include-fixed/stdio.h
+
+  One can run the following command in the build directory to reproduce the first failure:
+
+  make check-gcc-c RUNTESTFLAGS="cpp.exp=isysroot-1.c -v"
+
+  As an interim solution, the patch "gcc48-fixinc2" makes sure the problematic include
+  file is deleted, which happens only when we run "make check-fixincludes", not if you run 
+  "make stmp-fixinc". Once we have the official solution, this patch will be discarded.
+
+  If you can't place gcc4 to /tmp/gcc.dst, delete this header file from the PC directory: 
+  rm -rf gcc4/gcc-4.8.5-build/gcc/include-fixed/stdio.h
+
+  The second failure can be reproduced with the following command:
+
+  make check-gcc-c++ RUNTESTFLAGS="dg.exp=darwin-cfstring1.C"
+
+  The applied patch is proposed at: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=83531
+
+
+- Newer versions of GNU GCC (7.5 & 8.4) are installed at /opt/local instead of /usr/local.
+  The PC script creates some soft links (ie /opt/local/bin/gcc -> /opt/local/bin/gcc8)
+  without examining if an existing link points to a newer version.
+
+- Note that the Apple JRE is deprecated and some GUI classes have issues after Sierra. In
+  specific several text components aren't functional and possibly there are more problems.
+  In example, I can't edit BNF Grammars in Syntaxis with the Apple JRE on 10.13 & 10.14.
+  Yet, I could fully rebuild parsers/scanners on a fresh installed Mojave and the JAR file
+  built by the Apple JDK was fully functional on both Windows-8.1 & RedHat-9 (kernel 2.4).
+
+- You may fail to install Whizard-2.8.2 on Mojave (10.14) due to the following error msg:
+
+   dyld: Symbol not found: __ZTTNSt7__cxx1118basic_stringstreamIcSt11char_traitsIcESaIcEEE  
+
+  The above seems to be some recurring problem, it's reported ie also in 2015 and 2017:
+
+    https://groups.google.com/forum/#!topic/fastsimcoal/09fmDduSEEg
+    http://mailman.ucar.edu/pipermail/ncl-install/2017-January/002194.html
+
+  So far, I haven't figured out what exactly caused this problem or when introduced. The
+  last time I could successfully build the project was likely in December 2019 on a fresh
+  installed system (Mojave Installer 10.14.6 - summer 2019). On a MacMini (2011), isolated
+  from the Internet, the installation yesterday run smoothly on 10.11-10.13 & CentOS-7.6.
+
+  If you face the above error, then as an interim solution you could try these 2 commands:
+    ./port clean    whizard
+    ./port install  whizard  whizard-compiler=gcc4 
+ 
+  Although, this problem is fixed since Apr 4, 2020 the proper solution is a clean system.
+
+- If we build & run the following LAPACK test with gfortran we'll likely find differences:
+  https://github.com/numericalalgorithmsgroup/LAPACK_Examples
+
+  In two cases (zggev_example.x & zggev3_example.x) we find 1-2 differences with negative
+  zeros. Whereas, in another case (zggevx_example.x) there are some numeric differences 
+  with very small values (exponent < -15).
+
+- Both Firefox and Thunderbird no longer let you turn off updates [2020-05-13]. I've a
+  long time to check what Chrome does. 
+
+- You should better upgrade libiconv to 1.16 (./port install libiconv). Since Apr 11, 2020
+  this library is patched to provide few dual APIs, useful on Mojave if DYLD_LIBRAY_PATH
+  has some values. Otherwise, you may face the error "dyld: Symbol not found: _iconv".
+
+- A recurring problem when one uses the PC script are broken downloading links. If you can
+  not download a tarball, then you have to manually download from an alternative site and
+  place it in folder ~/Downloads or ~/Downloads/tars.
+
+  In most cases, the PC script lists a mirror site. In any case the tarball must have the
+  expected signature or someone has improperly touched the tarball (as they shouldn't).  
+  
+- Experimental support for Cygwin was added on March 3, 2021 for just two packages. There 
+  are some known problems however, see ie https://cmplx.sourceforge.io 
+
+  Shortly after, on Mar 8, a posting appeared in a c.l.f thread exhibiting numeric results
+  produced by gfortran that steadily differ in Linux/Cygwin vs Windows/Mac OS:
+  https://groups.google.com/g/comp.lang.fortran/c/Wkc4M-FQKdw   
+
+
+  Also, I've seen in another project that Libtool fails to link some executables. Likely I
+  will need some time to figure out if there are many more issues. Usually, I build my own
+  Fortran front-end in Cygwin without any important issues. Further the LAPACK test suite
+  runs successfully, which includes some tests for single & double precision numbers.
+
+  
+ ----------------------------------------------------------------------------------------
+ [ The Port Center (pc) was originally hosted at http://users.otenet.gr/~drikosev/ ]
+ These pages are accessible until 2021-04-05. So I've compressed them in a zip file above.
