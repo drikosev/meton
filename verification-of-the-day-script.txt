@@ -58,4 +58,23 @@
      synchronisation may recur at a minimum of 84 years. The recurred period of 1316
      years is a combination of 616 and 84 (2*616+84).
 
+     Note: A synchronisation of that kind in the beginning of the year may appear
+           after 666 years with the New Moon and the Full Moon inverted, on the
+           same month day and weekday, if we start counting from a leap year or
+           the previous one. Yet, the number 666 isn't divisible by 4 and we've
+           to expect several hours shifting of the lunar event in the solar day.
+           That explained, the inversion below appears on the last day of January. 
 
+
+            Year   New Moon.            Full Moon            New Moon
+           -0356   Sun, Jan  1  13:36   Sun, Jan 15  17:53   Thu, Jan 31  00:42
+           
+            0310   Full Moon            New Moon             Full Moon
+                   Mon, Jan  2  08:19   Thu, Jan 17  14:14   Thu, Jan 31  19:09
+
+
+            As it seems the example above and the numbers in it don't explain any
+            allegory and in fact, finding similar examples is more difficult than
+            finding examples for synchronisations that recur after 616 years.
+
+            
