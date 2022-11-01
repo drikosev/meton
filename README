@@ -254,11 +254,13 @@
        narration complies with a passover from Saturday to Tuesday. So, a supper on
        March 18 is feasible, which means that the following Sunday is on Mar 21. 
 
-       Finally, the original text doesn't associate the passover with a Saturday. So,
-       the year 34 is a candidate as the year of the last passover mentioned in New
-       Testament.  
-
-
+       Finally, the original text doesn't necessarily associate the passover with a
+       Saturday. So, the year 34 is a candidate as the year of the last passover
+       mentioned in New Testament.  
+ 
+       Note: The phrase "παρασκευὴ τοῦ πάσχα" may read "Friday of the Passover",
+             not necessarily "eve of the paschal feast" (John 19.14). [Nov 1, 2022]
+ 
 -Regarding the length of the tropical year, the mean value 365.24219 printed
  by the program "tropical-year.f90" has been found in Wikipedia and after making
  the math I computed a one day deviation from the Julian Year every 128.04 years.
